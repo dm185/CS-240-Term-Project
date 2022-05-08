@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Node{
-       public Node(String name, float x, float y){
+public class RoadNode{
+       public RoadNode(String name, float x, float y){
               this.x = x;
               this.y = y;
               this.name = name;
@@ -17,7 +17,7 @@ public class Node{
          * Gets the distance between this node and the other node
          * Returns a float
        ***/
-       public float distanceBetweenNodes(Node other){
+       public float distanceBetweenNodes(RoadNode other){
               float xdiff = (other.getX() - this.x);
               float ydiff = (other.getY() - this.y);
               
@@ -74,7 +74,7 @@ public class Node{
          * the Miles Per Hour (float) that the road is set to
          * Returns nothing
        ***/
-       public void AddConnection(Node destination, float mph){
+       public void AddConnection(RoadNode destination, float mph){
               //See Connection.java
               Connection con = new Connection(this, destination, mph);
        }
@@ -94,15 +94,15 @@ public class Node{
          * Returns a LinkedList<Node> that contains a in-sequence
          * order of the fastest nodes to traverse
        ***/
-       public LinkedList<Node> getShortestPath(Node dest){
-              LinkedList<Node> processingQeue = new LinkedList<Node>();
+       public LinkedList<RoadNode> getShortestPath(RoadNode dest){
+              LinkedList<RoadNode> processingQeue = new LinkedList<RoadNode>();
               
               this.distance = 0;
               processingQeue.addFirst(this);
               
               //Keep checking nodes until all nodes have been processed
               while(processingQeue.peek() != null){
-                     Node curNode = processingQeue.pollFirst();
+                     RoadNode curNode = processingQeue.pollFirst();
                      //Unmark this node as a node waiting to be processed
                      curNode.qeued = false;
                      
@@ -115,7 +115,7 @@ public class Node{
                      for(int i = 0; i < curNode.links.size(); i++){
                             Connection con = curNode.links.get(i);
                             //Get the neighboring node to this node
-                            Node neighbor = con.getDest(); 
+                            RoadNode neighbor = con.getDest(); 
                             //Links go both ways so make sure that the link we are viewing is not the current node
                             if(neighbor == curNode){
                                    neighbor = con.getSource();
@@ -146,8 +146,8 @@ public class Node{
               }
               
               //Backtrace to create a list of in-order nodes to destination
-              LinkedList<Node> ret_list = new LinkedList<Node>();
-              Node node = dest;
+              LinkedList<RoadNode> ret_list = new LinkedList<RoadNode>();
+              RoadNode node = dest;
               while(node != null){
                      ret_list.addFirst(node);
                      node = node.prev;
@@ -168,5 +168,5 @@ public class Node{
        private boolean visited;
        private boolean qeued;
        private float distance;
-       private Node prev;       //Last node that edited the distance
+       private RoadNode prev;       //Last node that edited the distance
 };

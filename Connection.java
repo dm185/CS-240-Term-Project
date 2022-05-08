@@ -6,7 +6,7 @@ It also stores the time it would take to go from 'src' to 'dest'
 based on the distance between the nodes and the MPH
 */
 public class Connection{
-       public Connection(Node src, Node destination, float mph){
+       public Connection(RoadNode src, RoadNode destination, float mph){
               this.src = src;
               this.dest = destination;
               this.mph = mph;
@@ -21,11 +21,11 @@ public class Connection{
               dest.getLinks().add(this);
        }
        
-       public Node getSource(){
+       public RoadNode getSource(){
               return src;
        }
        
-       public Node getDest(){
+       public RoadNode getDest(){
               return dest;
        }
        
@@ -37,8 +37,8 @@ public class Connection{
               return mph;
        }
        
-       private Node src;
-       private Node dest;
+       private RoadNode src;
+       private RoadNode dest;
        private float mph;
        private float cost;
 };

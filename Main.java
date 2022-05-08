@@ -42,24 +42,24 @@ public class Main extends Application {
               this.root.getChildren().add(l);
        }
        
-       public void DrawNode(Node n, Color c){
+       public void DrawNode(RoadNode n, Color c){
               AddCircle((int)n.getX(), (int)n.getY(), 20, c);
               AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
               
               for(Connection link : n.getLinks()) {
-                     Node n1 = link.getSource();
-                     Node n2 = link.getDest();
+                     RoadNode n1 = link.getSource();
+                     RoadNode n2 = link.getDest();
                      AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
               }
        }
        
-       public void DrawChosenNode(Node n, LinkedList<Node> chosen_nodes, Color c){
+       public void DrawChosenNode(RoadNode n, LinkedList<RoadNode> chosen_nodes, Color c){
               AddCircle((int)n.getX(), (int)n.getY(), 20, c);
               AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
               
               for(Connection link : n.getLinks()) {
-                     Node n1 = link.getSource();
-                     Node n2 = link.getDest();
+                     RoadNode n1 = link.getSource();
+                     RoadNode n2 = link.getDest();
                      //Only print the path if it is chosen
                      if(chosen_nodes.contains(n1) && chosen_nodes.contains(n2)) {
                             AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
@@ -79,13 +79,13 @@ public class Main extends Application {
               final float SPEED_LIMIT_2 = 40;
        
               //Create the starting and ending postions
-              Node startnode = new Node("Root", MIDX, STARTY);
-              Node end = new Node("END", MIDX, ENDY);
+              RoadNode startnode = new RoadNode("Root", MIDX, STARTY);
+              RoadNode end = new RoadNode("END", MIDX, ENDY);
 	
               //Create right path
-              Node right1 = new Node("R1", MIDX + 20 + 100, STARTY + 30);
-              Node right2 = new Node("R2", MIDX + 40 + 150, STARTY - 10);
-              Node right3 = new Node("R3", MIDX + 20 + 100, STARTY + 100);
+              RoadNode right1 = new RoadNode("R1", MIDX + 20 + 100, STARTY + 30);
+              RoadNode right2 = new RoadNode("R2", MIDX + 40 + 150, STARTY - 10);
+              RoadNode right3 = new RoadNode("R3", MIDX + 20 + 100, STARTY + 100);
 	
               //Connect right path nodes together
               startnode.AddConnection(right1, SPEED_LIMIT_1);  //root ---> right1
@@ -94,14 +94,14 @@ public class Main extends Application {
               right3.AddConnection(end, SPEED_LIMIT_1);    //right3 ----> end
 	
               //Create left path
-              Node left1 = new Node("L1", MIDX - 50, STARTY + 50);
+              RoadNode left1 = new RoadNode("L1", MIDX - 50, STARTY + 50);
               
               //Connect left path
               startnode.AddConnection(left1, SPEED_LIMIT_2);  //root ---> left1
               left1.AddConnection(end, SPEED_LIMIT_2);     //left1 ---> end
               
               //Solve for the shortest path between 'root' and 'end'
-              LinkedList<Node> path = startnode.getShortestPath(end);
+              LinkedList<RoadNode> path = startnode.getShortestPath(end);
               
               //Draw all of the node regardless if they have been chosen
               final Color DEFAULT_NODE_COLOR = Color.RED;
@@ -114,7 +114,7 @@ public class Main extends Application {
               
               //Draw nodes that were chosen in a Green color
               final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
-              for(Node node : path){ //Iterate through the list of chosen nodes
+              for(RoadNode node : path){ //Iterate through the list of chosen nodes
                      DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
               }
               
