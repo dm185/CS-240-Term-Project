@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Iterator;
 
 public class RoadNode{
        public RoadNode(String name, float x, float y){
@@ -86,6 +87,14 @@ public class RoadNode{
        public ArrayList<Connection> getLinks(){
               return this.links;
        }
+       
+       /***
+         * Return the node that last changed this one
+         * Returns a RoadNode
+       ***/
+       public RoadNode getPrev(){
+              return this.prev;
+       }
 
        /***
          * Takes in a destination node and calcluates the shortest distance
@@ -94,7 +103,7 @@ public class RoadNode{
          * Returns a LinkedList<Node> that contains a in-sequence
          * order of the fastest nodes to traverse
        ***/
-       public LinkedList<RoadNode> getShortestPath(RoadNode dest){
+       public Path getShortestPath(RoadNode dest) {
               LinkedList<RoadNode> processingQeue = new LinkedList<RoadNode>();
               
               this.distance = 0;
@@ -112,8 +121,7 @@ public class RoadNode{
                      }
               
                      //Iterate through all lines connecting this node to another node
-                     for(int i = 0; i < curNode.links.size(); i++){
-                            Connection con = curNode.links.get(i);
+                     for(Connection con : curNode.links){
                             //Get the neighboring node to this node
                             RoadNode neighbor = con.getDest(); 
                             //Links go both ways so make sure that the link we are viewing is not the current node
@@ -127,6 +135,7 @@ public class RoadNode{
                                    if(neighbor.isQeued() == false && neighbor.isVisited() == false){ //Reset if no other node has touched it yet
                                           neighbor.distance = Float.POSITIVE_INFINITY;
                                           neighbor.qeued = true;
+                                          neighbor.prev = null;
                                           processingQeue.addLast(neighbor); //Add to the end of the qeue so that it is processed last
                                    }
                             }
@@ -145,15 +154,7 @@ public class RoadNode{
                      curNode.markVisted();
               }
               
-              //Backtrace to create a list of in-order nodes to destination
-              LinkedList<RoadNode> ret_list = new LinkedList<RoadNode>();
-              RoadNode node = dest;
-              while(node != null){
-                     ret_list.addFirst(node);
-                     node = node.prev;
-              }
-              
-              return ret_list;
+              return new Path(dest);
        }
        
        private String name;
@@ -170,3 +171,53 @@ public class RoadNode{
        private float distance;
        private RoadNode prev;       //Last node that edited the distance
 };
+
+
+class Path implements Iterable<RoadNode>{
+       public Path(RoadNode final_node){
+              this.dest_node = final_node;
+       }
+       
+       public Iterator<RoadNode> iterator() {
+              return new PathIterator(this.dest_node);
+       }
+       
+       public boolean contains(RoadNode search_node){
+              RoadNode node = dest_node;
+              
+              while(node != null) {
+                     if(node == search_node){
+                            return true;
+                     }
+                     //Node has not been found. Keep searching
+                     node = node.getPrev();
+              }
+              
+              //Node was not found. Return false
+              return false;
+       }
+       
+       
+       private RoadNode dest_node;
+};
+
+class PathIterator implements Iterator<RoadNode>{
+    public PathIterator(RoadNode dest_node) {
+       this.cursorn = dest_node;
+    }
+      
+    // Checks if the next element exists
+    public boolean hasNext() {
+       return this.cursorn != null;
+    }
+      
+    //Move to next RoadNode in existance
+    public RoadNode next() {
+       RoadNode ret = cursorn;
+       this.cursorn = this.cursorn.getPrev();
+       return ret;
+    }
+    
+    private RoadNode cursorn;
+    
+}

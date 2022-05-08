@@ -53,7 +53,7 @@ public class Main extends Application {
               }
        }
        
-       public void DrawChosenNode(RoadNode n, LinkedList<RoadNode> chosen_nodes, Color c){
+       public void DrawChosenNode(RoadNode n, Path path, Color c){
               AddCircle((int)n.getX(), (int)n.getY(), 20, c);
               AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
               
@@ -61,7 +61,7 @@ public class Main extends Application {
                      RoadNode n1 = link.getSource();
                      RoadNode n2 = link.getDest();
                      //Only print the path if it is chosen
-                     if(chosen_nodes.contains(n1) && chosen_nodes.contains(n2)) {
+                     if(path.contains(n1) && path.contains(n2)) {
                             AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
                      }
               }
@@ -101,7 +101,7 @@ public class Main extends Application {
               left1.AddConnection(end, SPEED_LIMIT_2);     //left1 ---> end
               
               //Solve for the shortest path between 'root' and 'end'
-              LinkedList<RoadNode> path = startnode.getShortestPath(end);
+              Path path = startnode.getShortestPath(end);
               
               //Draw all of the node regardless if they have been chosen
               final Color DEFAULT_NODE_COLOR = Color.RED;
