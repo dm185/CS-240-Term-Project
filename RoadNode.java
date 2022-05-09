@@ -197,6 +197,31 @@ class Path implements Iterable<RoadNode>{
               return false;
        }
        
+       //Faster version of contains() but checks if both are in the structure
+       public boolean containsPair(RoadNode search_node1, RoadNode search_node2){
+              RoadNode node = dest_node;
+              boolean n1_found = false;
+              boolean n2_found = false;
+              
+              while(node != null) {
+                     if(node == search_node1){
+                            n1_found = true;
+                     }
+                     if(node == search_node2){
+                            n2_found = true;
+                     }
+                     //Stop execution so that we dont waste having to check nodes if we already found a match
+                     if(n1_found && n2_found){  
+                            return true;
+                     }
+                     //Node has not been found. Keep searching
+                     node = node.getPrev();
+              }
+              
+              //Node was not found. Return false
+              return false;
+       }
+       
        
        private RoadNode dest_node;
 };

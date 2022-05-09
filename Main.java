@@ -61,7 +61,7 @@ public class Main extends Application {
                      RoadNode n1 = link.getSource();
                      RoadNode n2 = link.getDest();
                      //Only print the path if it is chosen
-                     if(path.contains(n1) && path.contains(n2)) {
+                     if(path.containsPair(n1, n2)) {
                             AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
                      }
               }
