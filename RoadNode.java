@@ -228,21 +228,21 @@ class Path implements Iterable<RoadNode>{
 
 class PathIterator implements Iterator<RoadNode>{
     public PathIterator(RoadNode dest_node) {
-       this.cursorn = dest_node;
+       this.cursor = dest_node;
     }
       
     // Checks if the next element exists
     public boolean hasNext() {
-       return this.cursorn != null;
+       return this.cursor != null;
     }
       
     //Move to next RoadNode in existance
     public RoadNode next() {
-       RoadNode ret = cursorn;
-       this.cursorn = this.cursorn.getPrev();
+       RoadNode ret = cursor;
+       this.cursor = this.cursor.getPrev();
        return ret;
     }
     
-    private RoadNode cursorn;
+    private RoadNode cursor;
     
 }
