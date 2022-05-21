@@ -236,7 +236,7 @@ class PathIterator implements Iterator<RoadNode>{
        return this.cursor != null;
     }
       
-    //Move to next RoadNode in existance
+    //Move to next RoadNode in existence
     public RoadNode next() {
        RoadNode ret = cursor;
        this.cursor = this.cursor.getPrev();
