@@ -13,8 +13,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.Math;
 import java.util.Random;
+import java.util.Scanner;
 
 //NOTE: Most important code is in RoadNode.java and Connection.java
 
@@ -30,8 +34,20 @@ public class Main extends Application {
     private final Color DEFAULT_NODE_COLOR = Color.RED;
     private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
 	
-       private Group root;
+    private Group root;
        
+    
+    	//function used to make an arraylist from a text file. functions calling this function require 
+        // a throws FileNotFoundException
+    	private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{
+    		Scanner s = new Scanner(new File(filename));
+    		ArrayList<String> listS = new ArrayList<String>();
+    		while (s.hasNextLine())
+    			listS.add(s.nextLine());
+    		    		
+    		return listS;
+    	}
+    	
        //Helper functions to add things to the screen to display
        
        public void AddText(int x, int y, String text){
@@ -192,6 +208,7 @@ public class Main extends Application {
        public void start(Stage primaryStage){
               this.root = new Group();
 
+              
               //code to make a random map for testing purposes
               /*RoadNode startnode = new RoadNode("Root", MIDX, STARTY);
               RoadNode end = new RoadNode("END", MIDX, ENDY);
@@ -205,20 +222,14 @@ public class Main extends Application {
               
               primaryStage.setScene(scene);
               primaryStage.show();
+              
        }
        
        
        public static void main(String[] args){
     	   
     	   
-    	/* String name = JOptionPane.showInputDialog("Enter your name: ");
-   		JOptionPane.showMessageDialog(null, "Hello " + name);
-   		
-   		int age = Integer.parseInt(JOptionPane.showInputDialog("Enter your age"));
-   		JOptionPane.showMessageDialog(null, "You are " + age + " years old");
-   		
-   		double height = Double.parseDouble(JOptionPane.showInputDialog("Enter your height in feet with decimals"));
-   		JOptionPane.showMessageDialog(null, "You are " + height + " feet tall");*/
+    	
     	   
           launch(args);
        }

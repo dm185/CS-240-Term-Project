@@ -1,0 +1,25 @@
+library
+school
+coffee
+mall
+gym
+lake
+theater
+park
+bowling
+movies
+bar
+club
+studio
+museum
+bank
+apartment
+arcade
+karaoke
+market
+lounge
+pub
+gas
+grill
+airport
+bus station
