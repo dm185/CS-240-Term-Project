@@ -6,6 +6,7 @@ import javafx.scene.text.Text;
 import javafx.scene.paint.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.image.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.Math;
 import java.util.Random;
@@ -125,6 +127,39 @@ public class Main extends Application {
                             AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
                      }
               }
+       }
+       
+       public void ClearScreen(){
+              this.root.getChildren().clear();
+       }
+       
+       /*
+              Load image from HardDrive and return the Image object.
+              Throws FileNotFoundException if the file can not be found
+       */
+       public Image LoadImage(String file_path) throws FileNotFoundException{
+              return new Image(new FileInputStream(file_path)); 
+       }
+       
+       /*
+              Draws a image object to the screen. To get a image object, call the LoadImage() function.
+              Set scale to 1 if you want the image to be the same dimentions that the orignal file is
+       */
+       public void DrawImage(double x, double y, double scale,  Image img){
+              ImageView imageView = new ImageView(img);
+              
+              //Set arguments
+              imageView.setX(x);
+              imageView.setY(y);
+              
+              //Set widths
+              imageView.setPreserveRatio(true);
+              final double NEW_WIDTH = ((double)img.getWidth()) * scale;
+              final double NEW_HEIGHT = ((double)img.getWidth()) * scale;
+              imageView.setFitWidth(NEW_WIDTH);
+              imageView.setFitHeight(NEW_HEIGHT);
+              
+              this.root.getChildren().add(imageView);
        }
 
        //Given the start and end location, generate a random map of roads
