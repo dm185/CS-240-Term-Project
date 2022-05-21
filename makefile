@@ -9,7 +9,7 @@ SOURCES := ${shell find ${ROOT_DIRECTORY} -type d -print}
 
 J_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.java) ) $(wildcard *.java)
 
-JAVAFX_PATH=/home/rendev/Desktop/javafx-sdk-18.0.1/lib/
+JAVAFX_PATH=/home/rendev/Documents/GitHub/CS-240-Term-Project/javafx-sdk-18.0.1/lib/
 #/home/rendev/Desktop/Java/Proj/lib
 FX_MODS=javafx.graphics
 #javafx.application.Application,javafx.stage.Stage,javafx.scene.Scene,javafx.scene.layout.BorderPane

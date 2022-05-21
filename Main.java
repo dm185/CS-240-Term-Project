@@ -1,8 +1,7 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Group;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text; 
 import javafx.scene.paint.*;
 import javafx.scene.Scene;
@@ -24,7 +23,7 @@ import java.util.Scanner;
 
 
 public class Main extends Application {
-	private final int MIDX = 300;
+    private final int MIDX = 300;
     private final int STARTY = 100;
     private final int ENDY = STARTY + 350;
     private final float SPEED_LIMIT_1 = 50;
@@ -50,6 +49,23 @@ public class Main extends Application {
     	
        //Helper functions to add things to the screen to display
        
+       /*
+              Draw a 90* curve from {x1, y1} to {x2, y2}
+              Used for drawing roads that turn into a curve
+       */
+       public void Add90Curve(double startX, double startY, double endX, double endY, Color c){
+              final double CONTROL_X = startX;
+              final double CONTROL_Y = endY;
+              
+              QuadCurve q = new QuadCurve(startX, startY, CONTROL_X, CONTROL_Y, endX, endY);
+              
+              //Visual options
+              q.setFill(Color.TRANSPARENT);
+              q.setStroke(c);
+              
+              this.root.getChildren().add(q);
+       }
+       
        public void AddText(int x, int y, String text){
               Text t = new Text();
               t.setText(text);
@@ -59,9 +75,22 @@ public class Main extends Application {
               this.root.getChildren().add(t);
        }
        
-       public void AddCircle(int x, int y, int rad, Color c){
+       /*
+              Draw circle at x,y with color 'c'. If wireframe = true then the center will be trasnparent
+              and the color 'c' will instead be used for the outline of the circle.
+              Used for drawing roundabouts
+       */
+       public void AddCircle(int x, int y, int rad, Color c, boolean wireframe){
               Circle cir = new Circle(x, y, rad);
-              cir.setFill(c);
+              
+              if(wireframe){
+                     //Wireframe mode
+                     cir.setFill(Color.TRANSPARENT);
+                     cir.setStroke(c);
+              } else {
+                     //Fill mode
+                     cir.setFill(c);
+              }
               
               this.root.getChildren().add(cir);
        }
@@ -74,7 +103,7 @@ public class Main extends Application {
        }
        
        public void DrawNode(RoadNode n, Color c){
-              AddCircle((int)n.getX(), (int)n.getY(), 20, c);
+              AddCircle((int)n.getX(), (int)n.getY(), 20, c, false);
               AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
               
               for(Connection link : n.getLinks()) {
@@ -85,7 +114,7 @@ public class Main extends Application {
        }
        
        public void DrawChosenNode(RoadNode n, Path path, Color c){
-              AddCircle((int)n.getX(), (int)n.getY(), 20, c);
+              AddCircle((int)n.getX(), (int)n.getY(), 20, c, false);
               AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
               
               for(Connection link : n.getLinks()) {
