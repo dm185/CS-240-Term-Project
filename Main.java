@@ -139,10 +139,20 @@ public class Main extends Application {
        
        /*
               Load image from HardDrive and return the Image object.
-              Throws FileNotFoundException if the file can not be found
        */
-       public Image LoadImage(String file_path) throws FileNotFoundException{
-              return new Image(new FileInputStream(file_path)); 
+       public Image LoadImage(String file_path) {
+              Image ret = null;
+              try {
+                     ret = new Image(new FileInputStream(file_path)); 
+              } catch(Exception e){
+                     System.out.println("ERR: File \"" + file_path + "\" could not be loaded!");
+                     return null;
+              }
+              
+              if(ret == null){
+                     System.out.println("ERR: LoadImage succeded but the return value was null!");
+              }
+              return ret;
        }
        
        /*
