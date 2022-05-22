@@ -41,11 +41,15 @@ public class Main extends Application {
     	//function used to make an arraylist from a text file. functions calling this function require 
         // a throws FileNotFoundException
     	private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{
-    		Scanner s = new Scanner(new File(filename));
     		ArrayList<String> listS = new ArrayList<String>();
+    		try {
+    		Scanner s = new Scanner(new File(filename));
     		while (s.hasNextLine())
-    			listS.add(s.nextLine());
-    		    		
+    			listS.add(s.nextLine());		
+    		return listS;
+    		}catch(FileNotFoundException e) {
+    			System.out.println("FILE NOT FOUND");
+    		}
     		return listS;
     	}
     	
@@ -269,7 +273,7 @@ public class Main extends Application {
        }
 
        //DEFINE WHAT TO DRAW HERE
-       public void start(Stage primaryStage){
+       public void start(Stage primaryStage) {
               this.root = new Group();
 
               
@@ -286,6 +290,7 @@ public class Main extends Application {
               
               primaryStage.setScene(scene);
               primaryStage.show();
+
               
        }
        
