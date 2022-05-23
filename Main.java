@@ -30,8 +30,8 @@ public class Main extends Application {
     private final int ENDY = STARTY + 350;
     private final float SPEED_LIMIT_1 = 50;
     private final float SPEED_LIMIT_2 = 40;
-    private final int SCREENX = 600;
-    private final int SCREENY = 600;
+    private final int SCREENX = 800;
+    private final int SCREENY = 800;
     private final Color DEFAULT_NODE_COLOR = Color.RED;
     private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
 	
@@ -176,63 +176,6 @@ public class Main extends Application {
               this.root.getChildren().add(imageView);
        }
 
-       //Given the start and end location, generate a random map of roads
-       public void makeRandomRoads(RoadNode start, RoadNode dest, int numberOfRoads) {
-    	   ArrayList<RoadNode> roads = new ArrayList<RoadNode>();
-    	   
-    	   //create start and end nodes. Connected for testing purposes
-    	   roads.add(start);
-    	   DrawNode(roads.get(0), DEFAULT_NODE_COLOR);
-    	   roads.add(dest);
-    	   DrawNode(roads.get(1), DEFAULT_NODE_COLOR);
-    	   roads.get(0).AddConnection(roads.get(1), SPEED_LIMIT_1);
-    	   RoadNode roadMiddle = new RoadNode("middle", 100, 100);
-    	   roads.add(roadMiddle);
-    	   DrawNode(roads.get(2), DEFAULT_NODE_COLOR);
-    	   
-    	   
-    	   //I think this is breaking it
-    	   for (int i = 0; i<numberOfRoads; i++) {
-    		   
-    		   Random random = new Random(); //random boolean value; if true make left road, false make right road
-    		   boolean left = random.nextBoolean(); //get value for left, will build left if true, right if false
-    		   String roadname = String.valueOf(i); //roadname is just the value of i
-    		   int x, y;        // x and y coordinates for the new road
-    		   
-    		   //build left if left is true, right if right is false
-    		   if (left) {
-    			   x = MIDX - (i+1)*50;
-    			   y = STARTY + (i+1)*50;
-    		   }else {
-    			   x = MIDX + (i+1)*50;
-    			   y = STARTY + (i+1)*50;
-    		   }
-    		   
-    		   RoadNode road = new RoadNode(roadname, x, y);
-    		   roads.add(road);
-    		   DrawNode(roads.get(i+3), DEFAULT_NODE_COLOR);
-    	   }
-
-    	   
-    	   //TODO: Generate code that will connect all the roads with speed assigned to each road
-    	   //TODO: Draw nodes other than chosen nodes
-    	   
-    	   //roads.get(1).AddConnection(roads.get(2), SPEED_LIMIT_1);
-    	   /*for (int i = 2; i>roads.size(); i++) {
-    		   if(i>roads.size()-1) {
-    		    roads.get(i).AddConnection(roads.get(i+1), SPEED_LIMIT_1);
-    		   }
-    	   }*/
-    	   
-    	   
-    	   //draw shortest path between start and end node, start is indexed at 0, end indexed at 1
-    	   Path path = roads.get(0).getShortestPath(roads.get(1));
-    	   
-    	   for(RoadNode node : path){ //Iterate through the list of chosen nodes, change color to green
-               DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
-           }
-           
-       }
        
        //Create a map of roads that have been pre-designed (Matthew's Roads)
        public void makeMap() {
@@ -283,17 +226,14 @@ public class Main extends Application {
        }
 
        //DEFINE WHAT TO DRAW HERE
-       public void start(Stage primaryStage) {
+       public void start(Stage primaryStage) throws FileNotFoundException {
               this.root = new Group();
 
               
-              //code to make a random map for testing purposes
-              /*RoadNode startnode = new RoadNode("Root", MIDX, STARTY);
-              RoadNode end = new RoadNode("END", MIDX, ENDY);
-              makeRandomRoads(startnode, end, 5); */
+              RandomMap randomMap = new RandomMap();
               
               //code to draw Mathew's Map
-              makeMap();
+              //makeMap();
               
               //Draw to screen
               Scene scene = new Scene(this.root, SCREENX, SCREENY);
