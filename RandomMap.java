@@ -11,34 +11,82 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
+//TODO: edit makeRandomLocations() and makeLocationInQuadrant() to have more consistent spread and better looking maps
+//      randomly generate speed limits for makeRoads() function
+
 public class RandomMap {
-	//map will be printed in an 800 by 800 screen. 
-	private int screenSizeX = 800;
-	private int screenSizeY = 800;
+	//assuming map will be printed in a 900x900 screen. unused so far, might be deleted later 
+	private int screenSizeX = 900;
+	private int screenSizeY = 900;
 	//node colors
 	private final Color DEFAULT_NODE_COLOR = Color.RED;
     private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
+    //road speed limits
+    private final float SPEED_LIMIT_1 = 50;
+    private final float SPEED_LIMIT_2 = 40;
 	//each quadrant is like a set in a disjoint model
 	private ArrayList<RoadNode> quadrant1 = new ArrayList<RoadNode>(); //upper left quadrant
 	private ArrayList<RoadNode> quadrant2 = new ArrayList<RoadNode>(); //upper right quadrant
 	private ArrayList<RoadNode> quadrant3 = new ArrayList<RoadNode>(); // lower left quadrant
 	private ArrayList<RoadNode> quadrant4 = new ArrayList<RoadNode>(); // lower right quadrant	
 	
+	//TODO: delete println after done testing
 	//Makes a randomMap. Splits screen into four quadrants, makes location in each quadrant like
-	//a disjoint set, and then later will connect each quadrant together (union)
+	//a disjoint set, and then later will connect each quadrant together (union/merge)
 	public RandomMap() throws FileNotFoundException {
-		makeRandomLocations(0, 400, 0, 400, this.quadrant1);
-		makeRandomLocations(401, 800, 0, 400, this.quadrant2);
-		makeRandomLocations(0, 400, 401, 800, this.quadrant3);
-		makeRandomLocations(401, 800, 401, 800, this.quadrant4);
-		System.out.println(quadrant1.toString());
-		System.out.println(quadrant2.toString());
+		makeRandomLocations(50, 450, 50, 450, this.quadrant1); 
+		makeRoads(quadrant1);
+		makeRandomLocations(451, 850, 50, 450, this.quadrant2);
+		makeRoads(quadrant2);
+		makeRandomLocations(50, 450, 451, 850, this.quadrant3);
+		makeRoads(quadrant3);
+		makeRandomLocations(451, 850, 451, 850, this.quadrant4);
+		makeRoads(quadrant4);
+		//these print lines are for testing purposes to show how many locations
+		//are printed in each quadrant
+		System.out.println(quadrant1.toString()); 
+		System.out.println(quadrant2.toString()); 
 		System.out.println(quadrant3.toString());
 		System.out.println(quadrant4.toString());
+		mergeQuadrants(quadrant1, quadrant2, quadrant3, quadrant4);
 	}
 	
-	public void printMap() {
-		AddCircle(100, 100, 100, DEFAULT_NODE_COLOR);
+	//This function makes roads connecting the four quadrants to each other, and then
+	//merges all of them into quadrant1
+	private void mergeQuadrants(ArrayList<RoadNode> quadrantA, ArrayList<RoadNode> quadrantB, 
+		ArrayList<RoadNode> quadrantC, ArrayList<RoadNode> quadrantD) {
+		int randElementA = randomInt(0, quadrantA.size());
+		int randElementB = randomInt(0, quadrantB.size());
+		int randElementC = randomInt(0, quadrantC.size());
+		int randElementD = randomInt(0, quadrantD.size());
+		quadrantA.get(randElementA).AddConnection(quadrantB.get(randElementB), SPEED_LIMIT_1);
+		quadrantB.get(randElementB).AddConnection(quadrantC.get(randElementC), SPEED_LIMIT_1);
+		quadrantC.get(randElementC).AddConnection(quadrantD.get(randElementD), SPEED_LIMIT_1);
+		quadrantC.get(randElementC).AddConnection(quadrantA.get(randElementA), SPEED_LIMIT_1);
+		quadrantD.get(randElementD).AddConnection(quadrantA.get(randElementA), SPEED_LIMIT_1);
+		quadrantD.get(randElementD).AddConnection(quadrantB.get(randElementB), SPEED_LIMIT_1);
+		quadrantA.addAll(quadrantB);
+		quadrantA.addAll(quadrantC);
+		quadrantA.addAll(quadrantD);
+	}
+	
+	//These functions are used to help draw the map in the Main method. Because all the quadrants get
+	//merged into quadrant1, we never need to get information from quadrants 2-4
+	public ArrayList<RoadNode> getQuadrant1(){
+		return quadrant1;
+	}
+	
+	public int getQuadrant1Size() {
+		return quadrant1.size();
+	}
+
+	
+	//make roads in a quadrant
+	private void makeRoads(ArrayList<RoadNode> locations) {
+		for (int i = 0; i<locations.size()-1; i++) {
+			locations.get(i).AddConnection(locations.get(i+1), SPEED_LIMIT_1);
+		}
+		locations.get(0).AddConnection(locations.get(locations.size()-1), SPEED_LIMIT_1);
 	}
 	
 	//will make a list of strings from a filename, for use with locations.txt and names.txt
@@ -59,21 +107,22 @@ public class RandomMap {
 	private int randomInt(int x, int y) {		
 		int min = x; 
 		int max = y; 
-		int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
+		int randomNum = ThreadLocalRandom.current().nextInt(min, max);
 		return randomNum;
 	}
 	
-	//generates a random name from names.txt(Bob) and locations.txt(library) to make "Bob's library) and return it
+	//generates a random name from names.txt() and locations.txt() to make a location name and return it
 	private String randomLocationName() throws FileNotFoundException {
 		ArrayList<String> listNames = makeListFromTextFile("names.txt");
 		ArrayList<String> listLocations = makeListFromTextFile("locations.txt");
 		String locationName;
 		int nameElement, locationElement;
 		nameElement = randomInt(0, listNames.size()-1);
-		locationElement = randomInt(0, listLocations.size()-1);
+		locationElement = randomInt(0, listLocations.size());
 		locationName = listNames.get(nameElement) + "'s " + listLocations.get(locationElement);
 		return locationName;
 	}
+	
 	
 	//generates a random location within a quadrant and returns it
 	//minX and maxX map out the minimum/maximum possible x coordinate
@@ -92,96 +141,11 @@ public class RandomMap {
 		int maximumLocations = 6;
 		int randomNum = randomInt(minimumLocations, maximumLocations);
 		for (int i = 0; i < randomNum; i++) {
+			int number = i+1;
 			RoadNode newLocation = makeLocationInQuadrant(minX, maxX, minY, maxY);
+			System.out.println(newLocation.toString());
 			quadrant.add(newLocation);
 		}
 	}
-	
-	//helper functions to draw the map
-	private void AddText(int x, int y, String text){
-        Text t = new Text();
-        t.setText(text);
-        t.setX(x);
-        t.setY(y);
-	}
-	
-	private void AddCircle(int x, int y, int rad, Color c){
-        Circle cir = new Circle(x, y, rad);
-        	cir.setFill(c);
-	}
-	
-	private void AddLine(int x1, int y1, int x2, int y2, Color c){
-        Line l = new Line(x1, y1, x2, y2);
-        l.setStroke(c);
-	}
-	
-	private void DrawNode(RoadNode n, Color c){
-        AddCircle((int)n.getX(), (int)n.getY(), 20, c);
-        AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
-        
-        for(Connection link : n.getLinks()) {
-               RoadNode n1 = link.getSource();
-               RoadNode n2 = link.getDest();
-               AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
-        }
-	}
 }
 
-//TODO: delete this code when RandomMap() works
-//Currently referencing this to work on code above, delete later
-/*
-//Given the start and end location, generate a random map of roads
-public void makeRandomRoads(RoadNode start, RoadNode dest, int numberOfRoads) {
-	   ArrayList<RoadNode> roads = new ArrayList<RoadNode>();
-	   
-	   //create start and end nodes. Connected for testing purposes
-	   roads.add(start);
-	   DrawNode(roads.get(0), DEFAULT_NODE_COLOR);
-	   roads.add(dest);
-	   DrawNode(roads.get(1), DEFAULT_NODE_COLOR);
-	   roads.get(0).AddConnection(roads.get(1), SPEED_LIMIT_1);
-	   RoadNode roadMiddle = new RoadNode("middle", 100, 100);
-	   roads.add(roadMiddle);
-	   DrawNode(roads.get(2), DEFAULT_NODE_COLOR);
-	   
-	   for (int i = 0; i<numberOfRoads; i++) {
-		   
-		   Random random = new Random(); //random boolean value; if true make left road, false make right road
-		   boolean left = random.nextBoolean(); //get value for left, will build left if true, right if false
-		   String roadname = String.valueOf(i); //roadname is just the value of i
-		   int x, y;        // x and y coordinates for the new road
-		   
-		   //build left if left is true, right if right is false
-		   if (left) {
-			   x = MIDX - (i+1)*50;
-			   y = STARTY + (i+1)*50;
-		   }else {
-			   x = MIDX + (i+1)*50;
-			   y = STARTY + (i+1)*50;
-		   }
-		   
-		   RoadNode road = new RoadNode(roadname, x, y);
-		   roads.add(road);
-		   DrawNode(roads.get(i+3), DEFAULT_NODE_COLOR);
-	   }
-
-	   
-	   //TODO: Generate code that will connect all the roads with speed assigned to each road
-	   //TODO: Draw nodes other than chosen nodes
-	   
-	   //roads.get(1).AddConnection(roads.get(2), SPEED_LIMIT_1);
-	   /*for (int i = 2; i>roads.size(); i++) {
-		   if(i>roads.size()-1) {
-		    roads.get(i).AddConnection(roads.get(i+1), SPEED_LIMIT_1);
-		   }
-	   }
-	   
-	   
-	   //draw shortest path between start and end node, start is indexed at 0, end indexed at 1
-	   Path path = roads.get(0).getShortestPath(roads.get(1));
-	   
-	   for(RoadNode node : path){ //Iterate through the list of chosen nodes, change color to green
-        DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
-    }
-    
-}*/

@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.lang.Math;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 //NOTE: Most important code is in RoadNode.java and Connection.java
 
@@ -30,8 +31,8 @@ public class Main extends Application {
     private final int ENDY = STARTY + 350;
     private final float SPEED_LIMIT_1 = 50;
     private final float SPEED_LIMIT_2 = 40;
-    private final int SCREENX = 800;
-    private final int SCREENY = 800;
+    private final int SCREENX = 900;
+    private final int SCREENY = 900;
     private final Color DEFAULT_NODE_COLOR = Color.RED;
     private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
 	
@@ -224,13 +225,30 @@ public class Main extends Application {
                   DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
            }
        }
+       
+       //this code generates a random map, draws it, makes a path between two points, then prints that map
+       //Currently, the randomMap class needs generate greater spread between locations, 
+       //Also, trying to decide if a node should have multiple roads from single locations. Might make map too messy
+       public void makeRandomMap() throws FileNotFoundException {
+    	   RandomMap randomMap = new RandomMap();
+           for (int i = 0; i < randomMap.getQuadrant1Size(); i++) {
+         	  DrawNode(randomMap.getQuadrant1().get(i), DEFAULT_NODE_COLOR);
+           }
+           RoadNode start = randomMap.getQuadrant1().get(0);
+           RoadNode end = randomMap.getQuadrant1().get(11);
+           Path path = start.getShortestPath(end);
+           for (RoadNode node : path) {
+         	  DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
+           }
+       }
 
        //DEFINE WHAT TO DRAW HERE
        public void start(Stage primaryStage) throws FileNotFoundException {
               this.root = new Group();
 
+              //code to make RandomMap
+              makeRandomMap();
               
-              RandomMap randomMap = new RandomMap();
               
               //code to draw Mathew's Map
               //makeMap();
