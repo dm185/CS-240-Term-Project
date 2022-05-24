@@ -5,8 +5,11 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Text; 
 import javafx.scene.paint.*;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.event.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.image.*;
+import javafx.scene.input.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -142,39 +145,56 @@ public class Main extends Application {
               Load image from HardDrive and return the Image object.
        */
        public Image LoadImage(String file_path) {
-              Image ret = null;
-              try {
-                     ret = new Image(new FileInputStream(file_path)); 
-              } catch(Exception e){
-                     System.out.println("ERR: File \"" + file_path + "\" could not be loaded!");
-                     return null;
-              }
-              
-              if(ret == null){
-                     System.out.println("ERR: LoadImage succeded but the return value was null!");
-              }
-              return ret;
+              return ImageLoader.load(file_path);
        }
        
        /*
               Draws a image object to the screen. To get a image object, call the LoadImage() function.
-              Set scale to 1 if you want the image to be the same dimentions that the orignal file is
+              Set scale to ClickableImage.ORIGINAL_SIZE_SCALAR (aka. 1.0) to make the image appear with the
+              orignal width and height in the image file
        */
-       public void DrawImage(double x, double y, double scale,  Image img){
-              ImageView imageView = new ImageView(img);
+       public void DrawImage(Image img, double x, double y, double scale){
+              ClickableImage imageView = new ClickableImage(img, ClickableImage.NO_CLICK_ACTION);
               
+              DrawImage(imageView, x, y, scale);
+       }
+       
+       public void DrawImage(Image img, double x, double y){
+              DrawImage(img, x, y, ClickableImage.ORIGINAL_SIZE_SCALAR);
+       }
+       
+       //Overloads for ImageView type
+       
+       public void DrawImage(ClickableImage imgRenderer, double x, double y, double scale){
               //Set arguments
-              imageView.setX(x);
-              imageView.setY(y);
+              imgRenderer.setX(x);
+              imgRenderer.setY(y);
               
               //Set widths
-              imageView.setPreserveRatio(true);
-              final double NEW_WIDTH = ((double)img.getWidth()) * scale;
-              final double NEW_HEIGHT = ((double)img.getWidth()) * scale;
-              imageView.setFitWidth(NEW_WIDTH);
-              imageView.setFitHeight(NEW_HEIGHT);
+              imgRenderer.scale(scale);
               
-              this.root.getChildren().add(imageView);
+              DrawImage(imgRenderer);
+       }
+       
+       public void DrawImage(ClickableImage imgRenderer, double x, double y){
+              DrawImage(imgRenderer, x, y, ClickableImage.ORIGINAL_SIZE_SCALAR);
+       }
+       
+       public void DrawImage(ClickableImage imgRenderer){
+              this.root.getChildren().add(imgRenderer);
+       }
+       
+       
+       
+       public void DrawButton(Button b, double x, double y){
+              b.setTranslateX(x);
+              b.setTranslateY(y);
+              
+              this.root.getChildren().add(b);
+       }
+       
+       public void DrawButton(ImageButton b, double x, double y){
+              DrawButton((Button)b, x, y);
        }
 
        
@@ -254,8 +274,8 @@ public class Main extends Application {
               //makeMap();
               
               //Draw to screen
-              Scene scene = new Scene(this.root, SCREENX, SCREENY);
-              
+              Scene scene = new Scene(this.root, SCREENX, SCREENY);     
+
               primaryStage.setScene(scene);
               primaryStage.show();
 
@@ -264,10 +284,6 @@ public class Main extends Application {
        
        
        public static void main(String[] args){
-    	   
-    	   
-    	
-    	   
           launch(args);
        }
 };

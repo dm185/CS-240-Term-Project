@@ -3,7 +3,7 @@
 #
 
 
-
+ODIR ?= build
 ROOT_DIRECTORY=.
 SOURCES := ${shell find ${ROOT_DIRECTORY} -type d -print}
 
@@ -11,10 +11,10 @@ J_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.java) ) $(wildcard *.j
 
 JAVAFX_PATH=/home/rendev/Documents/GitHub/CS-240-Term-Project/javafx-sdk-18.0.1/lib/
 #/home/rendev/Desktop/Java/Proj/lib
-FX_MODS=javafx.graphics
+FX_MODS="javafx.graphics,javafx.controls"
 #javafx.application.Application,javafx.stage.Stage,javafx.scene.Scene,javafx.scene.layout.BorderPane
 
-JFLAGS = -g -d build 
+JFLAGS = -g -d $(ODIR)
 JC = javac
 
 
@@ -42,7 +42,7 @@ JC = javac
 # Remember that there must be a < tab > before the command line ('rule') 
 #
 
-%.class : %.java
+./build/%.class : %.java
 	$(JC) --module-path "$(JAVAFX_PATH)" --add-modules $(FX_MODS) $(JFLAGS) $*.java 
 
 
@@ -68,8 +68,10 @@ default: classes
 # with the .class suffix
 #
 
-classes: $(CLASSES:.java=.class)
+classes: $(addprefix $(ODIR)/, $(CLASSES:.java=.class)) | $(ODIR)
 
+$(ODIR):
+	mkdir -p $(ODIR)
 
 #
 # RM is a predefined macro in make (RM = rm -f)
