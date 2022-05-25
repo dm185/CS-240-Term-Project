@@ -10,18 +10,21 @@ public class Location {
       return place;
    }
    
-   List<Location> locations = new ArrayList<>();
+   List<String> locations = new ArrayList<>();
    
    // Search function iterates through a list of locations
-   // If the location is present the location is returned 
-   public Location findLocation(String place, List<Location> locations) {
-      Iterator<Location> iterator = locations.iterator();
-      while (iterator.hasNext()) {
-         Location location = iterator.next();
-         if (location.getPlace().equals(place)) {
-            return location;
+   // If the location is present the location's index is returned 
+   public int findLocation(String place, List<String> locations) {
+      int index = 0;
+      
+      for (int i = 0; i <locations.size(); i++) {
+         String location = locations.get(i);
+         if (location.equals(place)) 
+            return i;
+
+      
          }
-      }
-      return null;
+      System.out.println("Location not found");
+      return -1;
    }
 }
