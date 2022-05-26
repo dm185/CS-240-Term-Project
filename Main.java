@@ -38,7 +38,9 @@ public class Main extends Application {
     private final int SCREENY = 900;
     private final Color DEFAULT_NODE_COLOR = Color.RED;
     private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
-	
+    private final Color DEFAULT_ROAD_NODE_COLOR = Color.DARKMAGENTA;
+	private final Color DEFAULT_CLEAR_COLOR = Color.TRANSPARENT;
+    
     private Group root;
        
     
@@ -113,8 +115,8 @@ public class Main extends Application {
        }
        
        public void DrawNode(RoadNode n, Color c){
-              AddCircle((int)n.getX(), (int)n.getY(), 20, c, false);
-              AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
+              AddCircle((int)n.getX(), (int)n.getY(), 3, c, false);
+              AddText((int)n.getX(), (int)n.getY() + 10, n.getName());
               
               for(Connection link : n.getLinks()) {
                      RoadNode n1 = link.getSource();
@@ -124,8 +126,8 @@ public class Main extends Application {
        }
        
        public void DrawChosenNode(RoadNode n, Path path, Color c){
-              AddCircle((int)n.getX(), (int)n.getY(), 20, c, false);
-              AddText((int)n.getX(), (int)n.getY() + 20, n.getName());
+              AddCircle((int)n.getX(), (int)n.getY(), 0, c, false);
+              //AddText((int)n.getX(), (int)n.getY() + 0, n.getName());
               
               for(Connection link : n.getLinks()) {
                      RoadNode n1 = link.getSource();
@@ -216,7 +218,7 @@ public class Main extends Application {
            right3.AddConnection(end, SPEED_LIMIT_1);    //right3 ----> end
 	
            //Create left path
-           RoadNode left1 = new RoadNode("L1", MIDX - 50, STARTY + 50);
+           RoadNode left1 = new RoadNode("Target", MIDX - 50, STARTY + 100);
            RoadNode left2 = new RoadNode("L2", 450, 400);
            
            //Connect left path
@@ -226,8 +228,7 @@ public class Main extends Application {
            
            //Connect roads in middle for testing
            left1.AddConnection(right3, SPEED_LIMIT_1);
-           
-           
+            
            //Draw all of the node regardless if they have been chosen
            DrawNode(startnode, DEFAULT_NODE_COLOR);
            DrawNode(right1, DEFAULT_NODE_COLOR);
@@ -246,6 +247,7 @@ public class Main extends Application {
            }
        }
        
+
        //this code generates a random map, draws it, makes a path between two points, then prints that map
        //Currently, the randomMap class needs generate greater spread between locations, 
        //Also, trying to decide if a node should have multiple roads from single locations. Might make map too messy
@@ -260,18 +262,225 @@ public class Main extends Application {
            for (RoadNode node : path) {
          	  DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
            }
+	}	
+       
+       //This a premadeMap that opens a map with a manual placed start and end. T
+       public void premadeMap() {
+
+           //Points of interest (Replace with startnode and end for shortest-path)
+           RoadNode startnode = new RoadNode("WhatcomCC", 150, 200); //whatcomcc         <----- CURRENT STARTNODE
+           RoadNode mcdonalds = new RoadNode("McDonalds", 300, 525); //mcdonalds
+           RoadNode storage = new RoadNode("Storage", 521, 550); //storage
+           RoadNode walmart = new RoadNode("Walmart", 370, 30); //walmart
+           RoadNode jewelry = new RoadNode("Jewelry", 500, 200); //jewelry
+           RoadNode apartments = new RoadNode("Apartments", 520, 400); //apartments
+           RoadNode dental = new RoadNode("Dental", 350, 325); //dental
+           RoadNode end = new RoadNode("Target", 140, 430); //target				<----- CURRENT END POINT
+           RoadNode winco = new RoadNode("Winco", 370, 440); //winco
+   
+           //All the nodes on the roads
+           RoadNode t1 = new RoadNode("t1", 140, 418);               RoadNode m1 = new RoadNode("m1", 309, 518);
+           RoadNode t2 = new RoadNode("t2", 210, 418);               RoadNode m2 = new RoadNode("m2", 310, 440);
+           RoadNode t3 = new RoadNode("t3", 209, 360);			     RoadNode m3 = new RoadNode("m3", 311, 360);
+           RoadNode t4 = new RoadNode("t4", 208, 298);		 	     RoadNode m4 = new RoadNode("m4", 311, 308);
+           RoadNode t5 = new RoadNode("t5", 202, 292);               RoadNode m5 = new RoadNode("m5", 311, 200);
+           RoadNode t6 = new RoadNode("t6", 214, 292);        	     RoadNode m6 = new RoadNode("m6", 312, 40);
+           RoadNode t101 = new RoadNode("t101", 118, 430);           RoadNode j1 = new RoadNode("j1", 500, 204);
+           RoadNode t102 = new RoadNode("t102", 118, 420);           RoadNode j2 = new RoadNode("j2", 443, 203);
+           RoadNode t103 = new RoadNode("t103", 100, 416);           RoadNode j3 = new RoadNode("j3", 443, 308);
+           RoadNode t104 = new RoadNode("t104", 100, 360);           RoadNode j4 = new RoadNode("j4", 458, 340);
+           RoadNode t105 = new RoadNode("t105", 95, 314);            RoadNode j5 = new RoadNode("j5", 458, 362);
+           RoadNode t106 = new RoadNode("t106", 100, 298);           RoadNode j6 = new RoadNode("j6", 458, 398);
+           RoadNode wcc1 = new RoadNode("wwc1", 195, 200);           RoadNode j7 = new RoadNode("j7", 458, 416);
+           RoadNode wcc2 = new RoadNode("wcc2", 200, 210);           RoadNode wnc1 = new RoadNode("wnc1", 335, 440);
+           RoadNode wcc3 = new RoadNode("wcc3", 208, 240);           RoadNode wnc2 = new RoadNode("wnc2", 370, 416);
+           RoadNode wcc4 = new RoadNode("wcc4", 208, 287);           RoadNode wnc3 = new RoadNode("wnc3", 338, 420);
+           RoadNode wcc5 = new RoadNode("wcc5", 210, 200);           RoadNode wnc4 = new RoadNode("wnc4", 345, 416);
+           RoadNode wcc6 = new RoadNode("wcc6", 202, 195);           RoadNode b1 = new RoadNode("b1", 521, 493);
+           RoadNode d1 = new RoadNode("d1", 350, 308);           	 RoadNode b2 = new RoadNode("b2", 475, 492);
+           RoadNode d2 = new RoadNode("d2", 365, 308);           	 RoadNode b3 = new RoadNode("b3", 458, 500);
+           RoadNode d3 = new RoadNode("d3", 365, 337);           	 RoadNode b4 = new RoadNode("b4", 432, 513);
+           RoadNode d4 = new RoadNode("d4", 377, 347);           	 RoadNode b5 = new RoadNode("b5", 400, 520);
+           RoadNode d5 = new RoadNode("d5", 379, 360);           	 RoadNode apt1 = new RoadNode("apt1", 512, 399);
+           RoadNode d6 = new RoadNode("d6", 400, 361);           	 RoadNode apt2 = new RoadNode("apt2", 512, 364);
+           RoadNode d7 = new RoadNode("d7", 400, 375);           	 RoadNode tm1 = new RoadNode("tm1", 300, 438);
+           RoadNode d8 = new RoadNode("d8", 417, 379);           	 RoadNode tm2 = new RoadNode("tm2", 288, 418);
+           RoadNode d9 = new RoadNode("d9", 416, 416);           	 RoadNode wm1 = new RoadNode("wm", 370, 40);  
+           RoadNode mcd1 = new RoadNode("mcd1", 300, 518);	     	 RoadNode wcc101 = new RoadNode("wcc101", 115, 219);
+           RoadNode mcd2 = new RoadNode("mcd2", 280, 518);	     	 RoadNode wcc102 = new RoadNode("wcc102", 100, 219);
+           RoadNode mcd3 = new RoadNode("mcd3", 250, 540);
+           RoadNode mcd4 = new RoadNode("mcd4", 195, 535);
+           RoadNode mcd5 = new RoadNode("mcd5", 158, 537);
+           RoadNode mcd6 = new RoadNode("mcd6", 157, 503);
+           RoadNode mcd7 = new RoadNode("mcd7", 140, 467);
+           RoadNode mcd8 = new RoadNode("mcd8", 118, 445);        
+           
+           //All of the road connections. Replace Point of interest nodes with startnode and end for the shortest-path between the two.
+           startnode.AddConnection(wcc1, SPEED_LIMIT_1); //startnode (whatcomcc)      <----- CURRENT STARTNODE
+           wcc1.AddConnection(wcc6, SPEED_LIMIT_1); 
+           wcc1.AddConnection(wcc2, SPEED_LIMIT_1); 
+           wcc2.AddConnection(wcc3, SPEED_LIMIT_1); 
+           wcc2.AddConnection(wcc5, SPEED_LIMIT_1);  
+           wcc3.AddConnection(wcc4, SPEED_LIMIT_1); 
+           wcc5.AddConnection(wcc6, SPEED_LIMIT_1); 
+           t6.AddConnection(wcc4, SPEED_LIMIT_1); 
+           t5.AddConnection(wcc4, SPEED_LIMIT_1);
+           t4.AddConnection(t5, SPEED_LIMIT_1);
+           t4.AddConnection(t6, SPEED_LIMIT_1);
+           t4.AddConnection(wcc4, SPEED_LIMIT_1);
+           t3.AddConnection(t4, SPEED_LIMIT_1);
+           t3.AddConnection(m3, SPEED_LIMIT_1);
+           t2.AddConnection(tm2, SPEED_LIMIT_1);
+           tm2.AddConnection(tm1, SPEED_LIMIT_1);
+           tm1.AddConnection(m2, SPEED_LIMIT_1);
+           t2.AddConnection(t3, SPEED_LIMIT_1);
+           t1.AddConnection(t2, SPEED_LIMIT_1); 
+           t1.AddConnection(end, SPEED_LIMIT_1); //end (target)     <----- CURRENT END POINT
+           t101.AddConnection(end, SPEED_LIMIT_1); //end (target)     <----- CURRENT END POINT
+           t101.AddConnection(t102, SPEED_LIMIT_1);
+           t102.AddConnection(t103, SPEED_LIMIT_1);
+           t102.AddConnection(t1, SPEED_LIMIT_1);
+           t103.AddConnection(t104, SPEED_LIMIT_1);
+           t104.AddConnection(t105, SPEED_LIMIT_1);
+           t104.AddConnection(t3, SPEED_LIMIT_1);
+           t105.AddConnection(t106, SPEED_LIMIT_1);
+           t106.AddConnection(wcc102, SPEED_LIMIT_1);
+           wcc102.AddConnection(wcc101, SPEED_LIMIT_1);
+           wcc101.AddConnection(startnode, SPEED_LIMIT_1); //startnode (whatcomcc)      <----- CURRENT STARTNODE
+           m1.AddConnection(m2, SPEED_LIMIT_1); 
+           m1.AddConnection(b5, SPEED_LIMIT_1);
+           m1.AddConnection(mcd1, SPEED_LIMIT_1);
+           m2.AddConnection(m3, SPEED_LIMIT_1); 
+           m2.AddConnection(wnc1, SPEED_LIMIT_1);
+           m3.AddConnection(m4, SPEED_LIMIT_1); 
+           m3.AddConnection(d5, SPEED_LIMIT_1);
+           m4.AddConnection(m5, SPEED_LIMIT_1); 
+           m4.AddConnection(d1, SPEED_LIMIT_1);
+           m5.AddConnection(m6, SPEED_LIMIT_1); 
+           m5.AddConnection(j1, SPEED_LIMIT_1);
+           m5.AddConnection(wcc5, SPEED_LIMIT_1);
+           m6.AddConnection(wm1, SPEED_LIMIT_1);
+           wm1.AddConnection(walmart, SPEED_LIMIT_1); //walmart - Point of interest
+           j1.AddConnection(jewelry, SPEED_LIMIT_1); //jewelry - Point of interest
+           j1.AddConnection(j2, SPEED_LIMIT_1); 
+           j2.AddConnection(m5, SPEED_LIMIT_1);
+           j2.AddConnection(j3, SPEED_LIMIT_1);
+           j3.AddConnection(d1, SPEED_LIMIT_1);
+           j3.AddConnection(j4, SPEED_LIMIT_1);
+           j4.AddConnection(j5, SPEED_LIMIT_1);
+           j5.AddConnection(j6, SPEED_LIMIT_1);
+           j5.AddConnection(d6, SPEED_LIMIT_1);
+           j6.AddConnection(j7, SPEED_LIMIT_1);
+           j7.AddConnection(b3, SPEED_LIMIT_1);
+           b1.AddConnection(storage, SPEED_LIMIT_1); //storage - Point of interest
+           b1.AddConnection(b2, SPEED_LIMIT_1);
+           b2.AddConnection(b3, SPEED_LIMIT_1);
+           b3.AddConnection(b4, SPEED_LIMIT_1);
+           b4.AddConnection(b5, SPEED_LIMIT_1);
+           wnc1.AddConnection(winco, SPEED_LIMIT_1);
+           wnc1.AddConnection(wnc3, SPEED_LIMIT_1);
+           wnc2.AddConnection(winco, SPEED_LIMIT_1); //winco - Point of interst
+           wnc2.AddConnection(d9, SPEED_LIMIT_1);
+           wnc2.AddConnection(wnc4, SPEED_LIMIT_1);
+           wnc3.AddConnection(wnc4, SPEED_LIMIT_1);
+           d1.AddConnection(dental, SPEED_LIMIT_1); //dental - Point of interest
+           d1.AddConnection(d2, SPEED_LIMIT_1);
+           d2.AddConnection(d3, SPEED_LIMIT_1);
+           d3.AddConnection(d4, SPEED_LIMIT_1);
+           d4.AddConnection(d5, SPEED_LIMIT_1);
+           d5.AddConnection(d6, SPEED_LIMIT_1);
+           d6.AddConnection(d7, SPEED_LIMIT_1);
+           d7.AddConnection(d8, SPEED_LIMIT_1);
+           d8.AddConnection(d9, SPEED_LIMIT_1);
+           d9.AddConnection(j7, SPEED_LIMIT_1);
+           apt1.AddConnection(apartments, SPEED_LIMIT_1); //apartments - Point of interest
+           apt1.AddConnection(j6, SPEED_LIMIT_1);
+           apt1.AddConnection(apt2, SPEED_LIMIT_1);
+           apt2.AddConnection(j5, SPEED_LIMIT_1);
+           mcd1.AddConnection(mcdonalds, SPEED_LIMIT_1); //mcdonalds - Point of interest
+           mcd1.AddConnection(mcd2, SPEED_LIMIT_1);
+           mcd2.AddConnection(mcd3, SPEED_LIMIT_1);
+           mcd3.AddConnection(mcd4, SPEED_LIMIT_1);
+           mcd4.AddConnection(mcd5, SPEED_LIMIT_1);
+           mcd5.AddConnection(mcd6, SPEED_LIMIT_1);
+           mcd6.AddConnection(mcd7, SPEED_LIMIT_1);
+           mcd7.AddConnection(mcd8, SPEED_LIMIT_1);
+           mcd8.AddConnection(t101, SPEED_LIMIT_1);
+                 
+           //Draw all of the node regardless if they have been chosen
+           DrawNode(startnode, DEFAULT_NODE_COLOR); //whatcomcc      <----- CURRENT STARTNODE
+           DrawNode(storage, DEFAULT_NODE_COLOR); //storage
+           DrawNode(walmart, DEFAULT_NODE_COLOR); //walmart
+           DrawNode(jewelry, DEFAULT_NODE_COLOR); //jewelry
+           DrawNode(apartments, DEFAULT_NODE_COLOR); //apartments
+           DrawNode(dental, DEFAULT_NODE_COLOR); //dental
+           DrawNode(end, DEFAULT_NODE_COLOR); //target               <----- CURRENT END POINT
+           DrawNode(winco,DEFAULT_NODE_COLOR); //winco
+           DrawNode(mcdonalds, DEFAULT_NODE_COLOR); //mcdonalds          
+
+           //Solve for the shortest path between 'root' and 'end'
+           Path path = startnode.getShortestPath(end);
+           
+           //Boolean if true will show only the Chosen path from startnode and end node.
+           //Boolean if false will display all the nodes on the map
+           boolean flipNodes = true;
+           
+           //Draw nodes that were chosen in a Green color
+           if (flipNodes) {
+        	   for(RoadNode node : path){ //Iterate through the list of chosen nodes
+                	  DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
+           	   }
+           } else {
+               DrawNode(t1, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t101, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m1, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(t2, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t102, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m2, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(t3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t103, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m3, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(t4, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t104, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m4, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(t5, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t105, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m5, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(t6, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t106, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m6, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(wcc1, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b1, DEFAULT_ROAD_NODE_COLOR);      DrawNode(d1, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(wcc2, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b2, DEFAULT_ROAD_NODE_COLOR);      DrawNode(d2, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(wcc3, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d3, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(wcc4, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b4, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d4, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(wcc5, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b5, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d5, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(wcc6, DEFAULT_ROAD_NODE_COLOR);   DrawNode(wm1, DEFAULT_ROAD_NODE_COLOR);     DrawNode(d6, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j1, DEFAULT_ROAD_NODE_COLOR); 	  DrawNode(wnc1, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d7, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j2, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wnc2, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d8, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wnc3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d9, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j4, DEFAULT_ROAD_NODE_COLOR);  	  DrawNode(wnc4, DEFAULT_ROAD_NODE_COLOR);    DrawNode(apt1, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j5, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wcc101, DEFAULT_ROAD_NODE_COLOR);  DrawNode(apt2, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j6, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wcc102, DEFAULT_ROAD_NODE_COLOR);  DrawNode(tm1, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(j7, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wcc1, DEFAULT_ROAD_NODE_COLOR);    DrawNode(tm2, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd1, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd2, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd3, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd4, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd5, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd6, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd7, DEFAULT_ROAD_NODE_COLOR);
+               DrawNode(mcd8, DEFAULT_ROAD_NODE_COLOR);
+           } 
+
        }
 
        //DEFINE WHAT TO DRAW HERE
        public void start(Stage primaryStage) throws FileNotFoundException {
               this.root = new Group();
 
+
               //code to make RandomMap
               makeRandomMap();
+
+              Image myImage = LoadImage(".\\whatcomcc.jpg");
+              DrawImage(0,0,.83, myImage);
+
               
               
               //code to draw Mathew's Map
               //makeMap();
+              
+              //code to launch the premadeMap
+              premadeMap();
+
               
               //Draw to screen
               Scene scene = new Scene(this.root, SCREENX, SCREENY);     
