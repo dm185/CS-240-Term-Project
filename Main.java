@@ -470,8 +470,9 @@ public class Main extends Application {
               //code to make RandomMap
               makeRandomMap();
 
-              Image myImage = LoadImage(".\\whatcomcc.jpg");
-              DrawImage(0,0,.83, myImage);
+	      //Use path seperator so that it is cross platform
+              Image myImage = LoadImage("." + File.separator + "whatcomcc.jpg");
+              DrawImage(myImage, 0,0,0.83);
 
               
               
