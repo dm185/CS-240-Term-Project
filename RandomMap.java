@@ -90,16 +90,11 @@ public class RandomMap {
 	}
 	
 	//will make a list of strings from a filename, for use with locations.txt and names.txt
-	private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{
+	private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{	
 		ArrayList<String> listS = new ArrayList<String>();
-		try {
-		Scanner s = new Scanner(new File(filename));
+		Scanner s = new Scanner(ResourceLoader.LoadTextFile(filename));
 		while (s.hasNextLine())
 			listS.add(s.nextLine());		
-		return listS;
-		}catch(FileNotFoundException e) {
-			System.out.println("FILE NOT FOUND");
-		}
 		return listS;
 	}
 	

@@ -18,14 +18,12 @@ if not exist build (
 mkdir build
 )
 
+set JAVAFX_MODULES=javafx.graphics,javafx.controls
 
-javac -d build --module-path "%JAVAFX_PATH%" --add-modules javafx.graphics Main.java
-javac -d build RoadNode.java
-javac -d build Address.java  
-javac -d build AddressQueue.java  
-javac -d build BinarySearchTree.java  
-javac -d build Connection.java
+javac -d build --module-path "%JAVAFX_PATH%" --add-modules %JAVAFX_MODULES% *.java
 
 cd build
-java --module-path "%JAVAFX_PATH%" --add-modules javafx.graphics Main
+jar cfm Maps.jar Manifest.mf *.class *.png *.txt *.jpg
+
+java -jar --module-path "%JAVAFX_PATH%" --add-modules %JAVAFX_MODULES% Maps.jar
 cd ..

@@ -39,9 +39,6 @@ public class Main extends Application {
     
     private ImageButton ReturnButton;
     
-    private Group root;
-       
-    
     	//function used to make an arraylist from a text file. functions calling this function require 
         // a throws FileNotFoundException
        private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{
@@ -62,7 +59,7 @@ public class Main extends Application {
               Load image from HardDrive and return the Image object.
        */
        public Image LoadImage(String file_path) {
-              return ImageLoader.load(file_path);
+              return ResourceLoader.LoadImage(file_path);
        }
        
        
@@ -334,15 +331,15 @@ public class Main extends Application {
               final int CENTERX = SCREENX / 2;
               final int CENTERY = SCREENY / 2;
        
-              final String PREMADE_MAP_ICON_PATH = "." + File.separator +"premade.png";
-              final String RANDOM_MAP_ICON_PATH = "." + File.separator +"random.png";
-              final String EXIT_ICON_PATH = "." + File.separator +"exit.png";
+              final String PREMADE_MAP_ICON_PATH = "./premade.png";
+              final String RANDOM_MAP_ICON_PATH = "./random.png";
+              final String EXIT_ICON_PATH = "./exit.png";
               
               ImageButton premade = new ImageButton("Load Pre-made map", PREMADE_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {                    
                             Drawer.ClearScreen();
                             //Use path seperator so that it is cross platform
-                            final String WHATCOM_MAP_IMAGE = "." + File.separator + "whatcomcc.jpg";
+                            final String WHATCOM_MAP_IMAGE = "./whatcomcc.jpg";
                             Image myImage = LoadImage(WHATCOM_MAP_IMAGE);
                             Drawer.DrawImage(myImage, 0,0,0.83);
                             
@@ -401,8 +398,6 @@ public class Main extends Application {
 
        //DEFINE WHAT TO DRAW HERE
        public void start(Stage primaryStage) throws FileNotFoundException {
-              this.root = new Group();
-
               //Main menu will branch out and create the screen based on what button is pressed
               runMainMenu();
 

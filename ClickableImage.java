@@ -3,7 +3,7 @@ import javafx.event.*;
 import javafx.scene.input.*;
 
 /*
-    Loads an image in memory using the 'ImageLoader' class and then
+    Loads an image in memory using the 'ResourceLoader' class and then
     sets up the object to be drawn to the screen. This class returns a object is used in DrawImage
     to draw images to the screen. This also doubles as a 'ImageView' object if you specify the handle
     argument to be 'null'
@@ -37,7 +37,7 @@ public class ClickableImage extends ImageView{
 
     //use this constructor to load from disk. Read full constructor above for argument details
     public ClickableImage(String file_path, double scale, EventHandler<MouseEvent> handle){
-        this(ImageLoader.load(file_path), scale, handle); //Load image from disk
+        this(ResourceLoader.LoadImage(file_path), scale, handle); //Load image from disk
     }
   
     public ClickableImage(String file_path, EventHandler<MouseEvent>handle){
