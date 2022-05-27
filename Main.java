@@ -36,10 +36,6 @@ public class Main extends Application {
     private final float SPEED_LIMIT_2 = 40;
     private final int SCREENX = 900;
     private final int SCREENY = 900;
-    private final Color DEFAULT_NODE_COLOR = Color.RED;
-    private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
-    private final Color DEFAULT_ROAD_NODE_COLOR = Color.DARKMAGENTA;
-    private final Color DEFAULT_CLEAR_COLOR = Color.TRANSPARENT;
     
     private ImageButton ReturnButton;
     
@@ -48,102 +44,19 @@ public class Main extends Application {
     
     	//function used to make an arraylist from a text file. functions calling this function require 
         // a throws FileNotFoundException
-    	private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{
-    		ArrayList<String> listS = new ArrayList<String>();
-    		try {
-    		Scanner s = new Scanner(new File(filename));
-    		while (s.hasNextLine())
-    			listS.add(s.nextLine());		
-    		return listS;
-    		}catch(FileNotFoundException e) {
-    			System.out.println("FILE NOT FOUND");
-    		}
-    		return listS;
-    	}
-    	
-       //Helper functions to add things to the screen to display
-       
-       /*
-              Draw a 90* curve from {x1, y1} to {x2, y2}
-              Used for drawing roads that turn into a curve
-       */
-       public void Add90Curve(double startX, double startY, double endX, double endY, Color c){
-              final double CONTROL_X = startX;
-              final double CONTROL_Y = endY;
-              
-              QuadCurve q = new QuadCurve(startX, startY, CONTROL_X, CONTROL_Y, endX, endY);
-              
-              //Visual options
-              q.setFill(Color.TRANSPARENT);
-              q.setStroke(c);
-              
-              this.root.getChildren().add(q);
+       private static ArrayList<String> makeListFromTextFile(String filename) throws FileNotFoundException{
+       	ArrayList<String> listS = new ArrayList<String>();
+       	try {
+       	Scanner s = new Scanner(new File(filename));
+       	while (s.hasNextLine())
+       		listS.add(s.nextLine());		
+       	return listS;
+       	}catch(FileNotFoundException e) {
+       		System.out.println("FILE NOT FOUND");
+       	}
+       	return listS;
        }
-       
-       public void AddText(int x, int y, String text){
-              Text t = new Text();
-              t.setText(text);
-              t.setX(x);
-              t.setY(y);
-              
-              this.root.getChildren().add(t);
-       }
-       
-       /*
-              Draw circle at x,y with color 'c'. If wireframe = true then the center will be trasnparent
-              and the color 'c' will instead be used for the outline of the circle.
-              Used for drawing roundabouts
-       */
-       public void AddCircle(int x, int y, int rad, Color c, boolean wireframe){
-              Circle cir = new Circle(x, y, rad);
-              
-              if(wireframe){
-                     //Wireframe mode
-                     cir.setFill(Color.TRANSPARENT);
-                     cir.setStroke(c);
-              } else {
-                     //Fill mode
-                     cir.setFill(c);
-              }
-              
-              this.root.getChildren().add(cir);
-       }
-       
-       public void AddLine(int x1, int y1, int x2, int y2, Color c){
-              Line l = new Line(x1, y1, x2, y2);
-              l.setStroke(c);
-              
-              this.root.getChildren().add(l);
-       }
-       
-       public void DrawNode(RoadNode n, Color c){
-              AddCircle((int)n.getX(), (int)n.getY(), 3, c, false);
-              AddText((int)n.getX(), (int)n.getY() + 10, n.getName());
-              
-              for(Connection link : n.getLinks()) {
-                     RoadNode n1 = link.getSource();
-                     RoadNode n2 = link.getDest();
-                     AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
-              }
-       }
-       
-       public void DrawChosenNode(RoadNode n, Path path, Color c){
-              AddCircle((int)n.getX(), (int)n.getY(), 0, c, false);
-              //AddText((int)n.getX(), (int)n.getY() + 0, n.getName());
-              
-              for(Connection link : n.getLinks()) {
-                     RoadNode n1 = link.getSource();
-                     RoadNode n2 = link.getDest();
-                     //Only print the path if it is chosen
-                     if(path.containsPair(n1, n2)) {
-                            AddLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
-                     }
-              }
-       }
-       
-       public void ClearScreen(){
-              this.root.getChildren().clear();
-       }
+   
        
        /*
               Load image from HardDrive and return the Image object.
@@ -152,56 +65,6 @@ public class Main extends Application {
               return ImageLoader.load(file_path);
        }
        
-       /*
-              Draws a image object to the screen. To get a image object, call the LoadImage() function.
-              Set scale to ClickableImage.ORIGINAL_SIZE_SCALAR (aka. 1.0) to make the image appear with the
-              orignal width and height in the image file
-       */
-       public void DrawImage(Image img, double x, double y, double scale){
-              ClickableImage imageView = new ClickableImage(img, ClickableImage.NO_CLICK_ACTION);
-              
-              DrawImage(imageView, x, y, scale);
-       }
-       
-       public void DrawImage(Image img, double x, double y){
-              DrawImage(img, x, y, ClickableImage.ORIGINAL_SIZE_SCALAR);
-       }
-       
-       //Overloads for ImageView type
-       
-       public void DrawImage(ClickableImage imgRenderer, double x, double y, double scale){
-              //Set arguments
-              imgRenderer.setX(x);
-              imgRenderer.setY(y);
-              
-              //Set widths
-              imgRenderer.scale(scale);
-              
-              DrawImage(imgRenderer);
-       }
-       
-       public void DrawImage(ClickableImage imgRenderer, double x, double y){
-              DrawImage(imgRenderer, x, y, ClickableImage.ORIGINAL_SIZE_SCALAR);
-       }
-       
-       public void DrawImage(ClickableImage imgRenderer){
-              this.root.getChildren().add(imgRenderer);
-       }
-       
-       
-       
-       public void DrawButton(Button b, double x, double y){
-              b.setTranslateX(x);
-              b.setTranslateY(y);
-              
-              this.root.getChildren().add(b);
-       }
-       
-       public void DrawButton(ImageButton b, double x, double y){
-              DrawButton((Button)b, x, y);
-       }
-
-
        
        //Create a map of roads that have been pre-designed (Matthew's Roads)
        public void makeMap() {
@@ -233,20 +96,20 @@ public class Main extends Application {
            left1.AddConnection(right3, SPEED_LIMIT_1);
             
            //Draw all of the node regardless if they have been chosen
-           DrawNode(startnode, DEFAULT_NODE_COLOR);
-           DrawNode(right1, DEFAULT_NODE_COLOR);
-           DrawNode(right2, DEFAULT_NODE_COLOR);
-           DrawNode(right3, DEFAULT_NODE_COLOR);
-           DrawNode(left1, DEFAULT_NODE_COLOR);
-           DrawNode(left2,DEFAULT_NODE_COLOR); 
-           DrawNode(end, DEFAULT_NODE_COLOR);
+           Drawer.DrawNode(startnode, Drawer.DEFAULT_NODE_COLOR);
+           Drawer.DrawNode(right1, Drawer.DEFAULT_NODE_COLOR);
+           Drawer.DrawNode(right2, Drawer.DEFAULT_NODE_COLOR);
+           Drawer.DrawNode(right3, Drawer.DEFAULT_NODE_COLOR);
+           Drawer.DrawNode(left1, Drawer.DEFAULT_NODE_COLOR);
+           Drawer.DrawNode(left2,Drawer.DEFAULT_NODE_COLOR); 
+           Drawer.DrawNode(end, Drawer.DEFAULT_NODE_COLOR);
            
          //Solve for the shortest path between 'root' and 'end'
            Path path = startnode.getShortestPath(end);
            
            //Draw nodes that were chosen in a Green color
            for(RoadNode node : path){ //Iterate through the list of chosen nodes
-                  DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
+              Drawer.DrawChosenNode(node, path, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
            }
        }
        
@@ -257,15 +120,15 @@ public class Main extends Application {
        public void makeRandomMap() throws FileNotFoundException {
     	   RandomMap randomMap = new RandomMap();
            for (int i = 0; i < randomMap.getQuadrant1Size(); i++) {
-         	  DrawNode(randomMap.getQuadrant1().get(i), DEFAULT_NODE_COLOR);
+         	  Drawer.DrawNode(randomMap.getQuadrant1().get(i), Drawer.DEFAULT_NODE_COLOR);
            }
            RoadNode start = randomMap.getQuadrant1().get(0);
            RoadNode end = randomMap.getQuadrant1().get(11);
            Path path = start.getShortestPath(end);
            for (RoadNode node : path) {
-         	  DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
+         	  Drawer.DrawChosenNode(node, path, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
            }
-	}	
+       }	
        
        //This a premadeMap that opens a map with a manual placed start and end. T
        public void premadeMap() {
@@ -411,15 +274,15 @@ public class Main extends Application {
            mcd8.AddConnection(t101, SPEED_LIMIT_1);
                  
            //Draw all of the node regardless if they have been chosen
-           DrawNode(startnode, DEFAULT_NODE_COLOR); //whatcomcc      <----- CURRENT STARTNODE
-           DrawNode(storage, DEFAULT_NODE_COLOR); //storage
-           DrawNode(walmart, DEFAULT_NODE_COLOR); //walmart
-           DrawNode(jewelry, DEFAULT_NODE_COLOR); //jewelry
-           DrawNode(apartments, DEFAULT_NODE_COLOR); //apartments
-           DrawNode(dental, DEFAULT_NODE_COLOR); //dental
-           DrawNode(end, DEFAULT_NODE_COLOR); //target               <----- CURRENT END POINT
-           DrawNode(winco,DEFAULT_NODE_COLOR); //winco
-           DrawNode(mcdonalds, DEFAULT_NODE_COLOR); //mcdonalds          
+           Drawer.DrawNode(startnode, Drawer.DEFAULT_NODE_COLOR); //whatcomcc      <----- CURRENT STARTNODE
+           Drawer.DrawNode(storage, Drawer.DEFAULT_NODE_COLOR); //storage
+           Drawer.DrawNode(walmart, Drawer.DEFAULT_NODE_COLOR); //walmart
+           Drawer.DrawNode(jewelry, Drawer.DEFAULT_NODE_COLOR); //jewelry
+           Drawer.DrawNode(apartments, Drawer.DEFAULT_NODE_COLOR); //apartments
+           Drawer.DrawNode(dental, Drawer.DEFAULT_NODE_COLOR); //dental
+           Drawer.DrawNode(end, Drawer.DEFAULT_NODE_COLOR); //target               <----- CURRENT END POINT
+           Drawer.DrawNode(winco,Drawer.DEFAULT_NODE_COLOR); //winco
+           Drawer.DrawNode(mcdonalds, Drawer.DEFAULT_NODE_COLOR); //mcdonalds          
 
            //Solve for the shortest path between 'root' and 'end'
            Path path = startnode.getShortestPath(end);
@@ -431,37 +294,37 @@ public class Main extends Application {
            //Draw nodes that were chosen in a Green color
            if (flipNodes) {
         	   for(RoadNode node : path){ //Iterate through the list of chosen nodes
-                	  DrawChosenNode(node, path, DEFAULT_CHOSEN_NODE_COLOR);
+                	  Drawer.DrawChosenNode(node, path, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
            	   }
            } else {
-               DrawNode(t1, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t101, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m1, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(t2, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t102, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m2, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(t3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t103, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m3, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(t4, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t104, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m4, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(t5, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t105, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m5, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(t6, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(t106, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(m6, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(wcc1, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b1, DEFAULT_ROAD_NODE_COLOR);      DrawNode(d1, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(wcc2, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b2, DEFAULT_ROAD_NODE_COLOR);      DrawNode(d2, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(wcc3, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d3, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(wcc4, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b4, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d4, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(wcc5, DEFAULT_ROAD_NODE_COLOR);   DrawNode(b5, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d5, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(wcc6, DEFAULT_ROAD_NODE_COLOR);   DrawNode(wm1, DEFAULT_ROAD_NODE_COLOR);     DrawNode(d6, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j1, DEFAULT_ROAD_NODE_COLOR); 	  DrawNode(wnc1, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d7, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j2, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wnc2, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d8, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wnc3, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(d9, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j4, DEFAULT_ROAD_NODE_COLOR);  	  DrawNode(wnc4, DEFAULT_ROAD_NODE_COLOR);    DrawNode(apt1, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j5, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wcc101, DEFAULT_ROAD_NODE_COLOR);  DrawNode(apt2, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j6, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wcc102, DEFAULT_ROAD_NODE_COLOR);  DrawNode(tm1, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(j7, DEFAULT_ROAD_NODE_COLOR);	  DrawNode(wcc1, DEFAULT_ROAD_NODE_COLOR);    DrawNode(tm2, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd1, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd2, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd3, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd4, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd5, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd6, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd7, DEFAULT_ROAD_NODE_COLOR);
-               DrawNode(mcd8, DEFAULT_ROAD_NODE_COLOR);
-           } 
+               Drawer.DrawNode(t1, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(t101, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(m1, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(t2, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(t102, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(m2, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(t3, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(t103, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(m3, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(t4, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(t104, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(m4, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(t5, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(t105, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(m5, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(t6, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(t106, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(m6, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(wcc1, Drawer.DEFAULT_ROAD_NODE_COLOR);   Drawer.DrawNode(b1, Drawer.DEFAULT_ROAD_NODE_COLOR);      Drawer.DrawNode(d1, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(wcc2, Drawer.DEFAULT_ROAD_NODE_COLOR);   Drawer.DrawNode(b2, Drawer.DEFAULT_ROAD_NODE_COLOR);      Drawer.DrawNode(d2, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(wcc3, Drawer.DEFAULT_ROAD_NODE_COLOR);   Drawer.DrawNode(b3, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(d3, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(wcc4, Drawer.DEFAULT_ROAD_NODE_COLOR);   Drawer.DrawNode(b4, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(d4, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(wcc5, Drawer.DEFAULT_ROAD_NODE_COLOR);   Drawer.DrawNode(b5, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(d5, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(wcc6, Drawer.DEFAULT_ROAD_NODE_COLOR);   Drawer.DrawNode(wm1, Drawer.DEFAULT_ROAD_NODE_COLOR);     Drawer.DrawNode(d6, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j1, Drawer.DEFAULT_ROAD_NODE_COLOR); 	  Drawer.DrawNode(wnc1, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(d7, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j2, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(wnc2, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(d8, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j3, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(wnc3, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(d9, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j4, Drawer.DEFAULT_ROAD_NODE_COLOR);  	  Drawer.DrawNode(wnc4, Drawer.DEFAULT_ROAD_NODE_COLOR);    Drawer.DrawNode(apt1, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j5, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(wcc101, Drawer.DEFAULT_ROAD_NODE_COLOR);  Drawer.DrawNode(apt2, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j6, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(wcc102, Drawer.DEFAULT_ROAD_NODE_COLOR);  Drawer.DrawNode(tm1, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(j7, Drawer.DEFAULT_ROAD_NODE_COLOR);	  Drawer.DrawNode(wcc1, Drawer.DEFAULT_ROAD_NODE_COLOR);    Drawer.DrawNode(tm2, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd1, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd2, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd3, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd4, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd5, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd6, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd7, Drawer.DEFAULT_ROAD_NODE_COLOR);
+               Drawer.DrawNode(mcd8, Drawer.DEFAULT_ROAD_NODE_COLOR);
+           }
 
        }
        
@@ -477,23 +340,23 @@ public class Main extends Application {
               
               ImageButton premade = new ImageButton("Load Pre-made map", PREMADE_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {                    
-                            ClearScreen();
+                            Drawer.ClearScreen();
                             //Use path seperator so that it is cross platform
                             final String WHATCOM_MAP_IMAGE = "." + File.separator + "whatcomcc.jpg";
                             Image myImage = LoadImage(WHATCOM_MAP_IMAGE);
-                            DrawImage(myImage, 0,0,0.83);
+                            Drawer.DrawImage(myImage, 0,0,0.83);
                             
                             //Draw the nodes
                             premadeMap();
                             
                             //Draw Return button
-                            DrawButton(ReturnButton, 0, 0);
+                            Drawer.DrawButton(ReturnButton, 0, 0);
                      }
               );
               
               ImageButton random = new ImageButton("Load Random map", RANDOM_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {
-                            ClearScreen();
+                            Drawer.ClearScreen();
                             //code to make RandomMap
                             try{
                                    makeRandomMap();
@@ -506,7 +369,7 @@ public class Main extends Application {
                             }
                             
                             //Draw Return button
-                            DrawButton(ReturnButton, 0, 0);
+                            Drawer.DrawButton(ReturnButton, 0, 0);
                      }
               );
               
@@ -520,7 +383,7 @@ public class Main extends Application {
               
               ReturnButton = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
                      mouseClicked ->  {
-                            ClearScreen();
+                            Drawer.ClearScreen();
                             runMainMenu();
                      }
               );
@@ -531,9 +394,9 @@ public class Main extends Application {
               final double HALF_CENTER = (double)(CENTERX / 2.0);
               final double START_Y = (double)(CENTERY / 2.0);
               
-              DrawButton(premade, HALF_CENTER, START_Y  + SPACING * 0);
-              DrawButton(random, HALF_CENTER, START_Y  + SPACING * 1);
-              DrawButton(exit, HALF_CENTER, START_Y  + SPACING * 2);
+              Drawer.DrawButton(premade, HALF_CENTER, START_Y  + SPACING * 0);
+              Drawer.DrawButton(random, HALF_CENTER, START_Y  + SPACING * 1);
+              Drawer.DrawButton(exit, HALF_CENTER, START_Y  + SPACING * 2);
        }
 
        //DEFINE WHAT TO DRAW HERE
@@ -544,10 +407,10 @@ public class Main extends Application {
               runMainMenu();
 
               //Draw to screen
-              Scene scene = new Scene(this.root, SCREENX, SCREENY);     
+              Scene scene = Drawer.getScreen();     
 
               primaryStage.setScene(scene);
-              primaryStage.show();      
+              primaryStage.show(); 
        }
        
        
