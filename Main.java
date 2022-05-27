@@ -39,7 +39,9 @@ public class Main extends Application {
     private final Color DEFAULT_NODE_COLOR = Color.RED;
     private final Color DEFAULT_CHOSEN_NODE_COLOR = Color.GREEN;
     private final Color DEFAULT_ROAD_NODE_COLOR = Color.DARKMAGENTA;
-	private final Color DEFAULT_CLEAR_COLOR = Color.TRANSPARENT;
+    private final Color DEFAULT_CLEAR_COLOR = Color.TRANSPARENT;
+    
+    private ImageButton ReturnButton;
     
     private Group root;
        
@@ -198,6 +200,7 @@ public class Main extends Application {
        public void DrawButton(ImageButton b, double x, double y){
               DrawButton((Button)b, x, y);
        }
+
 
        
        //Create a map of roads that have been pre-designed (Matthew's Roads)
@@ -461,35 +464,90 @@ public class Main extends Application {
            } 
 
        }
+       
+        //Main menu will branch out and create the screen based on what button is pressed
+       private void runMainMenu(){
+              final double SCALE = 0.20;
+              final int CENTERX = SCREENX / 2;
+              final int CENTERY = SCREENY / 2;
+       
+              final String PREMADE_MAP_ICON_PATH = "." + File.separator +"premade.png";
+              final String RANDOM_MAP_ICON_PATH = "." + File.separator +"random.png";
+              final String EXIT_ICON_PATH = "." + File.separator +"exit.png";
+              
+              ImageButton premade = new ImageButton("Load Pre-made map", PREMADE_MAP_ICON_PATH, SCALE,
+                     mouseClicked ->  {                    
+                            ClearScreen();
+                            //Use path seperator so that it is cross platform
+                            final String WHATCOM_MAP_IMAGE = "." + File.separator + "whatcomcc.jpg";
+                            Image myImage = LoadImage(WHATCOM_MAP_IMAGE);
+                            DrawImage(myImage, 0,0,0.83);
+                            
+                            //Draw the nodes
+                            premadeMap();
+                            
+                            //Draw Return button
+                            DrawButton(ReturnButton, 0, 0);
+                     }
+              );
+              
+              ImageButton random = new ImageButton("Load Random map", RANDOM_MAP_ICON_PATH, SCALE,
+                     mouseClicked ->  {
+                            ClearScreen();
+                            //code to make RandomMap
+                            try{
+                                   makeRandomMap();
+                            } catch(FileNotFoundException e){
+                                   System.out.printf("One of the files needed to make the random maps was not found! Please redownload the program or contact the developers!\n");
+                                   System.out.printf("Now exiting program ...\n");
+                                   
+                                   final int EXIT_FAILURE = 1;
+                                   System.exit(EXIT_FAILURE);
+                            }
+                            
+                            //Draw Return button
+                            DrawButton(ReturnButton, 0, 0);
+                     }
+              );
+              
+             ImageButton exit = new ImageButton("Exit Program", EXIT_ICON_PATH, SCALE,
+                     mouseClicked ->  {
+                            //close the application
+                            final int EXIT_SUCCESS = 0;
+                            System.exit(EXIT_SUCCESS);
+                     }
+              );
+              
+              ReturnButton = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
+                     mouseClicked ->  {
+                            ClearScreen();
+                            runMainMenu();
+                     }
+              );
+              
+              
+              //End of menu design
+              final double SPACING = 170;
+              final double HALF_CENTER = (double)(CENTERX / 2.0);
+              final double START_Y = (double)(CENTERY / 2.0);
+              
+              DrawButton(premade, HALF_CENTER, START_Y  + SPACING * 0);
+              DrawButton(random, HALF_CENTER, START_Y  + SPACING * 1);
+              DrawButton(exit, HALF_CENTER, START_Y  + SPACING * 2);
+       }
 
        //DEFINE WHAT TO DRAW HERE
        public void start(Stage primaryStage) throws FileNotFoundException {
               this.root = new Group();
 
+              //Main menu will branch out and create the screen based on what button is pressed
+              runMainMenu();
 
-              //code to make RandomMap
-              makeRandomMap();
-
-	      //Use path seperator so that it is cross platform
-              Image myImage = LoadImage("." + File.separator + "whatcomcc.jpg");
-              DrawImage(myImage, 0,0,0.83);
-
-              
-              
-              //code to draw Mathew's Map
-              //makeMap();
-              
-              //code to launch the premadeMap
-              premadeMap();
-
-              
               //Draw to screen
               Scene scene = new Scene(this.root, SCREENX, SCREENY);     
 
               primaryStage.setScene(scene);
-              primaryStage.show();
-
-              
+              primaryStage.show();      
        }
        
        
