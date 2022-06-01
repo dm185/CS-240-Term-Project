@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+
 public class PremadeMap{
     private final float SPEED_LIMIT_1 = 50;
     private final float SPEED_LIMIT_2 = 40;
 
 
     private PremadeMap(){
+        this.nodes = new ArrayList<RoadNode>();
+
         //Points of interest (Replace with startnode and end for shortest-path)
         RoadNode startnode = this.AddRoadNode("WhatcomCC", 150, 200); //whatcomcc         <----- CURRENT STARTNODE
         RoadNode mcdonalds = this.AddRoadNode("McDonalds", 300, 525); //mcdonalds
@@ -147,7 +151,7 @@ public class PremadeMap{
 
     //Allocates a new road node and returns it. Makes sure to register the node with the master node list.
     //This allows aliasing
-    private RoadNode AddRoadNode(String name, double x, double y){
+    private RoadNode AddRoadNode(String name, float x, float y){
         RoadNode new_node = new RoadNode(name, x, y);
         this.nodes.add(new_node);
         return new_node;
