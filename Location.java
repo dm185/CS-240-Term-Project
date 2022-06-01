@@ -21,8 +21,6 @@ public class Location {
          String location = locations.get(i);
          if (location.equals(place)) 
             return i;
-
-      
          }
       System.out.println("Location not found");
       return -1;

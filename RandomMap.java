@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+//The following class can generate a RandomMap. A random map is a map of randomly generated roadnodes that all connect. A user can
+//pick a start and end location of the map, and then route directions between two locations. 
+
 
 //TODO: edit makeRandomLocations() and makeLocationInQuadrant() to have more consistent spread and better looking maps
 //      randomly generate speed limits for makeRoads() function

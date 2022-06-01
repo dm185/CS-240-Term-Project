@@ -37,6 +37,19 @@ public class Main extends Application {
     private final int SCREENX = 900;
     private final int SCREENY = 900;
     
+    //used to make icons in the GUI
+    final String PREMADE_MAP_ICON_PATH = "./premade.png";
+    final String RANDOM_MAP_ICON_PATH = "./random.png";
+    final String EXIT_ICON_PATH = "./exit.png";
+    final double SCALE = 0.20;
+    final int CENTERX = SCREENX / 2;
+    final int CENTERY = SCREENY / 2;
+    final double SPACING = 170;
+    final double HALF_CENTER = (double)(CENTERX / 2.0);
+    final double START_Y = (double)(CENTERY / 2.0);
+    
+    
+    
     private ImageButton ReturnButton;
     
     	//function used to make an arraylist from a text file. functions calling this function require 
@@ -111,21 +124,7 @@ public class Main extends Application {
        }
        
 
-       //this code generates a random map, draws it, makes a path between two points, then prints that map
-       //Currently, the randomMap class needs generate greater spread between locations, 
-       //Also, trying to decide if a node should have multiple roads from single locations. Might make map too messy
-       public void makeRandomMap() throws FileNotFoundException {
-    	   RandomMap randomMap = new RandomMap();
-           for (int i = 0; i < randomMap.getQuadrant1Size(); i++) {
-         	  Drawer.DrawNode(randomMap.getQuadrant1().get(i), Drawer.DEFAULT_NODE_COLOR);
-           }
-           RoadNode start = randomMap.getQuadrant1().get(0);
-           RoadNode end = randomMap.getQuadrant1().get(11);
-           Path path = start.getShortestPath(end);
-           for (RoadNode node : path) {
-         	  Drawer.DrawChosenNode(node, path, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
-           }
-       }	
+      
        
        //This a premadeMap that opens a map with a manual placed start and end. T
        public void premadeMap() {
@@ -325,16 +324,80 @@ public class Main extends Application {
 
        }
        
+       //this code generates a random map, draws it, makes a path between two points, then prints that map
+       //Currently, the randomMap class needs generate greater spread between locations, 
+       //Also, trying to decide if a node should have multiple roads from single locations. Might make map too messy
+       public void makeRandomMap() throws FileNotFoundException {
+    	   RandomMap randomMap = new RandomMap();
+           for (int i = 0; i < randomMap.getQuadrant1Size(); i++) {
+         	  Drawer.DrawNode(randomMap.getQuadrant1().get(i), Drawer.DEFAULT_NODE_COLOR);
+           }
+           RoadNode start = randomMap.getQuadrant1().get(0);
+           RoadNode end = randomMap.getQuadrant1().get(11);
+           Path path = start.getShortestPath(end);
+           for (RoadNode node : path) {
+         	  Drawer.DrawChosenNode(node, path, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
+           }
+       }	
+       
         //Main menu will branch out and create the screen based on what button is pressed
+       	//first menu being interacted with
+       
+       private void printRandomMap(RandomMap randomMap) {
+    	   Drawer.ClearScreen();
+           for (int i = 0; i < randomMap.getQuadrant1Size(); i++) {
+          	  Drawer.DrawNode(randomMap.getQuadrant1().get(i), Drawer.DEFAULT_NODE_COLOR);
+            }
+           ReturnButton = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                          Drawer.ClearScreen();
+                          try {
+							runRandomMapMenu();
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                }
+            );
+           Drawer.DrawButton(ReturnButton, 0, 0);
+       }
+       
+       private void runRandomMapMenu() throws FileNotFoundException {
+    	   //generate a random map that can be interacted with
+    	   
+    	   RandomMap randomMap = new RandomMap();
+    	   
+    	   
+    	   
+    	   ImageButton ShowMapButton = new ImageButton("Show map", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                          printRandomMap(randomMap);                }
+           );
+    	   
+    	   //this button returns to the main menu
+    	   ReturnButton = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                          Drawer.ClearScreen();
+                          runMainMenu();
+                }
+            );
+    	   
+    	   //draw the buttons that a user will interact with
+    	   Drawer.DrawButton(ShowMapButton, HALF_CENTER, START_Y  + SPACING * 0);
+    	   Drawer.DrawButton(ReturnButton, HALF_CENTER, START_Y  + SPACING * 2);
+       }
+       
+       
        private void runMainMenu(){
-              final double SCALE = 0.20;
+    	   /*testing to see if this can be moved and deleted
+           	  final double SCALE = 0.20;
               final int CENTERX = SCREENX / 2;
               final int CENTERY = SCREENY / 2;
-       
-              final String PREMADE_MAP_ICON_PATH = "./premade.png";
+           	  final String PREMADE_MAP_ICON_PATH = "./premade.png";
               final String RANDOM_MAP_ICON_PATH = "./random.png";
-              final String EXIT_ICON_PATH = "./exit.png";
+              final String EXIT_ICON_PATH = "./exit.png";*/
               
+              //button to display premade map
               ImageButton premade = new ImageButton("Load Pre-made map", PREMADE_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {                    
                             Drawer.ClearScreen();
@@ -351,9 +414,23 @@ public class Main extends Application {
                      }
               );
               
+              //button to open new random map screen, still testing
+              ImageButton randomMapScreen = new ImageButton("Load Random Map", RANDOM_MAP_ICON_PATH, SCALE,
+            		  mouseClicked ->{
+            			  Drawer.ClearScreen();
+            			  try {
+							runRandomMapMenu();
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+            		  }
+              );
+              
+              //button to display random map
               ImageButton random = new ImageButton("Load Random map", RANDOM_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {
-                            Drawer.ClearScreen();
+                    	 	Drawer.ClearScreen();
                             //code to make RandomMap
                             try{
                                    makeRandomMap();
@@ -370,6 +447,7 @@ public class Main extends Application {
                      }
               );
               
+             //button to exit the program
              ImageButton exit = new ImageButton("Exit Program", EXIT_ICON_PATH, SCALE,
                      mouseClicked ->  {
                             //close the application
@@ -378,23 +456,26 @@ public class Main extends Application {
                      }
               );
               
-              ReturnButton = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
+             //button to return to main menu screen
+              ImageButton ReturnButton = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
                      mouseClicked ->  {
                             Drawer.ClearScreen();
                             runMainMenu();
                      }
               );
               
-              
+                           
               //End of menu design
               final double SPACING = 170;
               final double HALF_CENTER = (double)(CENTERX / 2.0);
               final double START_Y = (double)(CENTERY / 2.0);
               
               Drawer.DrawButton(premade, HALF_CENTER, START_Y  + SPACING * 0);
-              Drawer.DrawButton(random, HALF_CENTER, START_Y  + SPACING * 1);
+              Drawer.DrawButton(randomMapScreen, HALF_CENTER, START_Y  + SPACING * 1);
               Drawer.DrawButton(exit, HALF_CENTER, START_Y  + SPACING * 2);
        }
+       
+       
 
        //DEFINE WHAT TO DRAW HERE
        public void start(Stage primaryStage) throws FileNotFoundException {

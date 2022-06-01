@@ -14,7 +14,7 @@ public class FindRoadNode {
         al.add("Fred");
         al.add("Anytime Fitness");
         System.out.println("Elements of ArrayList of String Type: "+al);
-        int start = test.findLocation("Q", al);
+        int start = test.findLocation("Fred", al);
         System.out.println(start);
      }
 }
