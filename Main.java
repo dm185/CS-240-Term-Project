@@ -47,6 +47,8 @@ public class Main extends Application {
     final double SPACING = 170;
     final double HALF_CENTER = (double)(CENTERX / 2.0);
     final double START_Y = (double)(CENTERY / 2.0);
+    
+    private boolean flipNodes = false;
    
     
     	//function used to make an arraylist from a text file. functions calling this function require 
@@ -282,7 +284,8 @@ public class Main extends Application {
            
            //Boolean if true will show only the Chosen path from startnode and end node.
            //Boolean if false will display all the nodes on the map
-           boolean flipNodes = true;
+           //boolean flipNodes = true;
+          
            
            //Draw nodes that were chosen in a Green color
            if (flipNodes) {
@@ -392,6 +395,27 @@ public class Main extends Application {
                   }
            );
     	   
+    	   ImageButton PrintLocationsButton = new ImageButton("Print Locations List", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                	   JOptionPane.showMessageDialog(null, "print locations here");               
+                  }
+           );
+    	   
+    	   ImageButton PickStartButton = new ImageButton("Pick Start", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                	   String location = JOptionPane.showInputDialog("Enter your start location: ");
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
+                	   		+ " matching node.name or tell user node not found");                  
+                  }
+           );
+    	   
+    	   ImageButton PickDestinationsButton = new ImageButton("Pick Destination", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                	   String location = JOptionPane.showInputDialog("Enter your start location: ");
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
+                	   		+ " matching node.name or tell user node not found");  
+               	   }
+           );
     	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
                           printRandomMapRoute(randomMap);                
@@ -407,9 +431,68 @@ public class Main extends Application {
             );
     	   
     	   //draw the buttons that a user will interact with
-    	   Drawer.DrawButton(ShowMapButton, HALF_CENTER, START_Y  + SPACING * 0);
-           Drawer.DrawButton(ShowRouteButton, HALF_CENTER, START_Y  + SPACING * 1);
-    	   Drawer.DrawButton(GoBack, HALF_CENTER, START_Y  + SPACING * 2);
+    	   Drawer.DrawButton(ShowMapButton, HALF_CENTER-100, START_Y  + SPACING * -1);
+    	   Drawer.DrawButton(PrintLocationsButton, HALF_CENTER-100, START_Y  + SPACING * 0);
+    	   Drawer.DrawButton(PickStartButton, HALF_CENTER+200, START_Y  + SPACING * 0);
+    	   Drawer.DrawButton(PickDestinationsButton, HALF_CENTER+200, START_Y  + SPACING * 1);
+           Drawer.DrawButton(ShowRouteButton, HALF_CENTER-100, START_Y  + SPACING * 1);
+    	   Drawer.DrawButton(GoBack, HALF_CENTER-100, START_Y  + SPACING * 2);
+       }
+       
+       private void runPreMadeMapMenu() {
+    	   //generate a random map that can be interacted with
+    	   Drawer.ClearScreen();
+
+    	   ImageButton ShowMapButton = new ImageButton("Show map", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                	   	  flipNodes = false;
+                          runPremadeMap();               
+                  }
+           );
+    	   
+    	   ImageButton PrintLocationsButton = new ImageButton("Print Locations List", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                	   JOptionPane.showMessageDialog(null, "print locations here");               
+                  }
+           );
+    	   
+    	   ImageButton PickStartButton = new ImageButton("Pick Start", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+               		   String location = JOptionPane.showInputDialog("Enter your start location: ");
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
+                	   		+ " matching node.name or tell user node not found");                     
+                  }
+           );
+    	   
+    	   ImageButton PickDestinationsButton = new ImageButton("Pick Destination", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+               		   String location = JOptionPane.showInputDialog("Enter your destination: ");
+                	   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
+                	   		+ " matching node.name or tell user node not found");                
+                  }
+           );
+    	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                	   flipNodes = true;
+                	   runPremadeMap();                
+                  }
+           );
+    	   
+    	   //this button returns to the main menu
+    	   ImageButton GoBack = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
+                   mouseClicked ->  {
+                          Drawer.ClearScreen();
+                          runMainMenu();
+                }
+            );
+    	   
+    	   //draw the buttons that a user will interact with
+    	   Drawer.DrawButton(ShowMapButton, HALF_CENTER-100, START_Y  + SPACING * -1);
+    	   Drawer.DrawButton(PrintLocationsButton, HALF_CENTER-100, START_Y  + SPACING * 0);
+    	   Drawer.DrawButton(PickStartButton, HALF_CENTER+200, START_Y  + SPACING * 0);
+    	   Drawer.DrawButton(PickDestinationsButton, HALF_CENTER+200, START_Y  + SPACING * 1);
+           Drawer.DrawButton(ShowRouteButton, HALF_CENTER-100, START_Y  + SPACING * 1);
+    	   Drawer.DrawButton(GoBack, HALF_CENTER-100, START_Y  + SPACING * 2);
        }
        
        //function to run the premademap screen
@@ -425,7 +508,7 @@ public class Main extends Application {
            ImageButton GoBack = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
                    mouseClicked ->  {
                           Drawer.ClearScreen();
-                          runMainMenu();
+                          runPreMadeMapMenu();
                 }
             );
            //Draw Return button
@@ -435,12 +518,10 @@ public class Main extends Application {
        //Display three buttons to interact with, Run Premade Map, go to Random Map screen, Exit program
        private void runMainMenu(){
     	   
-    	   
-    	   
               //button to display premade map
               ImageButton premade = new ImageButton("Load Pre-made map", PREMADE_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {
-                    	 	runPremadeMap();
+                    	 runPreMadeMapMenu();
                      }
               );
               
