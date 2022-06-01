@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -18,6 +20,9 @@ import javafx.scene.text.Text;
 //      randomly generate speed limits for makeRoads() function
 
 public class RandomMap {
+
+	//this allows the instance of this map variable to be only made once when called
+	private static RandomMap only_allowed_instance;
 	//assuming map will be printed in a 900x900 screen. unused so far, might be deleted later 
 	private int screenSizeX = 900;
 	private int screenSizeY = 900;
@@ -36,7 +41,7 @@ public class RandomMap {
 	//TODO: delete println after done testing
 	//Makes a randomMap. Splits screen into four quadrants, makes location in each quadrant like
 	//a disjoint set, and then later will connect each quadrant together (union/merge)
-	public RandomMap() throws FileNotFoundException {
+	private RandomMap() throws FileNotFoundException {
 		makeRandomLocations(50, 450, 50, 450, this.quadrant1); 
 		makeRoads(quadrant1);
 		makeRandomLocations(451, 850, 50, 450, this.quadrant2);
@@ -47,11 +52,15 @@ public class RandomMap {
 		makeRoads(quadrant4);
 		//these print lines are for testing purposes to show how many locations
 		//are printed in each quadrant
-		System.out.println(quadrant1.toString()); 
-		System.out.println(quadrant2.toString()); 
-		System.out.println(quadrant3.toString());
-		System.out.println(quadrant4.toString());
+		System.out.println("map made successfully");
 		mergeQuadrants(quadrant1, quadrant2, quadrant3, quadrant4);
+	}
+	
+	public static RandomMap get() throws FileNotFoundException {
+		if(only_allowed_instance == null){
+            only_allowed_instance = new RandomMap();
+     }
+		return only_allowed_instance;
 	}
 	
 	//This function makes roads connecting the four quadrants to each other, and then
@@ -141,7 +150,6 @@ public class RandomMap {
 		for (int i = 0; i < randomNum; i++) {
 			int number = i+1;
 			RoadNode newLocation = makeLocationInQuadrant(minX, maxX, minY, maxY);
-			System.out.println(newLocation.toString());
 			quadrant.add(newLocation);
 		}
 	}
