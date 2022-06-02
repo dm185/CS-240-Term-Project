@@ -9,8 +9,10 @@ public class MapManager{
     }
   
     public static void DrawAllNodes(){
-        for(RoadNode n : MapManager.currentMap){
-            Drawer.DrawNode(n, Drawer.DEFAULT_NODE_COLOR);
+        if(MapManager.currentMap != PremadeMap.getNodeList() || MapManager.currentPath == null){ //Pre-made map does not print out paths if the quickest path is shown
+            for(RoadNode n : MapManager.currentMap){
+                Drawer.DrawNode(n, Drawer.DEFAULT_NODE_COLOR);
+            }
         }
 
         if(currentPath != null){
@@ -23,6 +25,7 @@ public class MapManager{
 
 
     public static void SwapMap(MapType type){
+        currentPath = null;
         switch(type){
             case RANDOM:
                 try{

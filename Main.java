@@ -152,25 +152,6 @@ static private final int SCREENX = 900;
     	   Drawer.DrawButton(GoBack, HALF_CENTER-100, START_Y  + SPACING * 2);
        }
 
-       private void runPremadeMap(){
-        Drawer.ClearScreen();
-        //Use path seperator so that it is cross platform
-        final String WHATCOM_MAP_IMAGE = "./whatcomcc.jpg";
-        Image myImage = LoadImage(WHATCOM_MAP_IMAGE);
-        Drawer.DrawImage(myImage, 0,0,0.83);
-           
-        //Draw the nodes
-        MapManager.SwapMap(MapManager.MapType.PREMADE);
-        MapManager.DrawAllNodes();
-        ImageButton GoBack = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
-                mouseClicked ->  {
-                        Drawer.ClearScreen();
-                        runPreMadeMapMenu();
-                }
-            );
-        //Draw Return button
-        Drawer.DrawButton(GoBack, 0, 0);
-    }
        
        private static void runPremadeMap(){
               Drawer.ClearScreen();
