@@ -46,6 +46,11 @@ public class MapManager{
         return MapManager.currentPath;
     }
 
+    //Gets a node at a certain index
+    public static RoadNode getNode(int index){
+        return MapManager.currentMap.get(index);
+    }
+
 
     private static ArrayList<RoadNode> currentMap = null;
     private static Path currentPath = null;
