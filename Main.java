@@ -36,8 +36,8 @@ public class Main extends Application {
        public Image LoadImage(String file_path) {
               return ResourceLoader.LoadImage(file_path);
        }
-       
-static private final int SCREENX = 900;
+    
+    static private final int SCREENX = 900;
     static private final int SCREENY = 900;
     
     //used to make icons in the GUI
@@ -52,17 +52,17 @@ static private final int SCREENX = 900;
     static final double START_Y = (double)(CENTERY / 2.0);       
        
        //function to draw routes over a random map
-       private static void drawRandomMapRoutes() {
-    	   MapManager.SwapMap(MapManager.MapType.RANDOM);
-    	   RoadNode start = MapManager.getNode(0);
-          RoadNode end = MapManager.getNode(11);
+       private static void drawRandomMapRoutes(int s, int e) {
+    	  MapManager.SwapMap(MapManager.MapType.RANDOM);
+    	  RoadNode start = MapManager.getNode(s);
+          RoadNode end = MapManager.getNode(e);
           MapManager.GetShortestPath(start, end);
           MapManager.DrawAllNodes();
        }
     
     //function to print the random map
        private static void printRandomMap() {
-    	   Drawer.ClearScreen();
+    	  Drawer.ClearScreen();
           MapManager.SwapMap(MapManager.MapType.RANDOM);
           MapManager.DrawAllNodes();
            
@@ -81,9 +81,9 @@ static private final int SCREENX = 900;
        }
        
        //function to print the random map with a route drawn
-       private static void printRandomMapRoute() {
+       private static void printRandomMapRoute(int start, int destination) {
     	   Drawer.ClearScreen();
-           drawRandomMapRoutes();
+           drawRandomMapRoutes(start, destination);
            ImageButton GoBack = new ImageButton("Go back", EXIT_ICON_PATH, SCALE,
                    mouseClicked ->  {
                           Drawer.ClearScreen();
@@ -98,9 +98,23 @@ static private final int SCREENX = 900;
            Drawer.DrawButton(GoBack, 0, 0);
        }
        
+       //function to print all the locations in a map in a JOptionPane dialog box
+       private static void printMapLocations() {
+    	   int size = MapManager.getNumberOfLocations();
+    	   String output = "";
+    	   for (int i = 0; i < size; i++) {
+    		   RoadNode location = MapManager.getNode(i);
+    		   String name = location.getName();
+    		   String locationNumber = String.valueOf(i+1);
+    		   output += locationNumber + " " + name + "\n";
+    	   }
+    	   JOptionPane.showMessageDialog(null, output);
+       }
+       
      //function to run the random map menu
        private static void runRandomMapMenu() throws FileNotFoundException {
     	   //generate a random map that can be interacted with
+
 
     	   ImageButton ShowMapButton = new ImageButton("Show map", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
@@ -110,7 +124,7 @@ static private final int SCREENX = 900;
     	   
     	   ImageButton PrintLocationsButton = new ImageButton("Print Locations List", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   JOptionPane.showMessageDialog(null, "print locations here");               
+                	   printMapLocations();               
                   }
            );
     	   
@@ -118,7 +132,7 @@ static private final int SCREENX = 900;
                    mouseClicked ->  {
                 	   String location = JOptionPane.showInputDialog("Enter your start location: ");
                		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
-                	   		+ " matching node.name or tell user node not found");                  
+                	   		+ " matching node.name or tell user node not found");
                   }
            );
     	   
@@ -131,7 +145,7 @@ static private final int SCREENX = 900;
            );
     	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                          printRandomMapRoute();                
+                          printRandomMapRoute(0, 11);
                   }
            );
     	   
@@ -148,7 +162,7 @@ static private final int SCREENX = 900;
     	   Drawer.DrawButton(PrintLocationsButton, HALF_CENTER-100, START_Y  + SPACING * 0);
     	   Drawer.DrawButton(PickStartButton, HALF_CENTER+200, START_Y  + SPACING * 0);
     	   Drawer.DrawButton(PickDestinationsButton, HALF_CENTER+200, START_Y  + SPACING * 1);
-          Drawer.DrawButton(ShowRouteButton, HALF_CENTER-100, START_Y  + SPACING * 1);
+           Drawer.DrawButton(ShowRouteButton, HALF_CENTER-100, START_Y  + SPACING * 1);
     	   Drawer.DrawButton(GoBack, HALF_CENTER-100, START_Y  + SPACING * 2);
        }
 
@@ -161,7 +175,6 @@ static private final int SCREENX = 900;
               Drawer.DrawImage(myImage, 0,0,0.83);
               
               //Draw the nodes
-              MapManager.SwapMap(MapManager.MapType.PREMADE);
               MapManager.DrawAllNodes();
               ImageButton GoBack = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
                      mouseClicked ->  {
@@ -186,7 +199,8 @@ static private final int SCREENX = 900;
     	   
     	   ImageButton PrintLocationsButton = new ImageButton("Print Locations List", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   JOptionPane.showMessageDialog(null, "print locations here");               
+                	   printMapLocations();
+                	   //JOptionPane.showMessageDialog(null, "print locations here");               
                   }
            );
     	   
@@ -236,6 +250,7 @@ static private final int SCREENX = 900;
               ImageButton premade = new ImageButton("Load Pre-made map", PREMADE_MAP_ICON_PATH, SCALE,
                      mouseClicked ->  {
                     	 runPreMadeMapMenu();
+                    	 MapManager.SwapMap(MapManager.MapType.PREMADE);
                      }
               );
               
@@ -249,7 +264,9 @@ static private final int SCREENX = 900;
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+            			  MapManager.SwapMap(MapManager.MapType.RANDOM);
             		  }
+            		  
               );
               
              //button to exit the program

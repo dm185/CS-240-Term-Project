@@ -54,6 +54,10 @@ public class MapManager{
         return MapManager.currentMap.get(index);
     }
 
+    public static int getNumberOfLocations() {
+    	return currentMap.size();
+    }
+    
 
     private static ArrayList<RoadNode> currentMap = null;
     private static Path currentPath = null;
