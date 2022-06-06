@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import java.lang.IllegalArgumentException;
 import java.io.FileNotFoundException;
 
@@ -56,6 +59,22 @@ public class MapManager{
 
     public static int getNumberOfLocations() {
     	return currentMap.size();
+    }
+    
+    public static int findLocation(String location) {
+ 	   String compare;
+ 	   RoadNode road;
+ 	   int size = currentMap.size();
+ 	   for (int i = 0; i < size; i++) {
+ 		   road = MapManager.getNode(i);
+ 		   compare = road.getName();
+ 		   if (location.equalsIgnoreCase(compare) == true) {
+ 			   JOptionPane.showMessageDialog(null, "location found");
+ 			   return i;
+ 		   }    		  
+ 	   }
+ 	   JOptionPane.showMessageDialog(null, "location not found");
+		   return -1; 
     }
     
 

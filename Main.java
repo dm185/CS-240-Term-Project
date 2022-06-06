@@ -39,6 +39,8 @@ public class Main extends Application {
     
     static private final int SCREENX = 900;
     static private final int SCREENY = 900;
+    static private int start = 0;
+	static private int destination = 11;
     
     //used to make icons in the GUI
     static final String PREMADE_MAP_ICON_PATH = "./premade.png";
@@ -111,10 +113,10 @@ public class Main extends Application {
     	   JOptionPane.showMessageDialog(null, output);
        }
        
+       
      //function to run the random map menu
        private static void runRandomMapMenu() throws FileNotFoundException {
     	   //generate a random map that can be interacted with
-
 
     	   ImageButton ShowMapButton = new ImageButton("Show map", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
@@ -131,21 +133,27 @@ public class Main extends Application {
     	   ImageButton PickStartButton = new ImageButton("Pick Start", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
                 	   String location = JOptionPane.showInputDialog("Enter your start location: ");
-               		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
-                	   		+ " matching node.name or tell user node not found");
+                	   start = MapManager.findLocation(location);
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
+               		   if (start == -1) //if location not found, make start index 0
+               			   start = 0;
                   }
            );
     	   
     	   ImageButton PickDestinationsButton = new ImageButton("Pick Destination", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   String location = JOptionPane.showInputDialog("Enter your start location: ");
-               		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
-                	   		+ " matching node.name or tell user node not found");  
-               	   }
+                	   String location = JOptionPane.showInputDialog("Enter your destination: ");
+                	   destination = MapManager.findLocation(location);
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
+               		   if (destination == -1) //if location not found, make start index 11
+               			   destination = 11;
+                  }               	   
            );
+    	   
     	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                          printRandomMapRoute(0, 11);
+                	   	  System.out.println(start);
+                          printRandomMapRoute(start, destination);
                   }
            );
     	   
@@ -206,17 +214,21 @@ public class Main extends Application {
     	   
     	   ImageButton PickStartButton = new ImageButton("Pick Start", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-               		   String location = JOptionPane.showInputDialog("Enter your start location: ");
-               		   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
-                	   		+ " matching node.name or tell user node not found");                     
+                	   String location = JOptionPane.showInputDialog("Enter your start location: ");
+                	   start = MapManager.findLocation(location);
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
+               		   if (start == -1) //if location not found, make start index 0
+               			   start = 0;                  
                   }
            );
     	   
     	   ImageButton PickDestinationsButton = new ImageButton("Pick Destination", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-               		   String location = JOptionPane.showInputDialog("Enter your destination: ");
-                	   JOptionPane.showMessageDialog(null, "User picked: "+ location + ". Search through list here to find"
-                	   		+ " matching node.name or tell user node not found");                
+                	   String location = JOptionPane.showInputDialog("Enter your destination: ");
+                	   destination = MapManager.findLocation(location);
+               		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
+               		   if (destination == -1) //if location not found, make start index 5
+               			   destination = 5;              
                   }
            );
     	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
