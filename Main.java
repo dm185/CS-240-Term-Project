@@ -120,6 +120,9 @@ public class Main extends Application {
     	   ImageButton PickStartButton = new ImageButton("Pick Start", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
                 	   String location = JOptionPane.showInputDialog("Enter your start location: ");
+                	   if (location == null) {
+                		   location = "";
+                	   }
                 	   start = MapManager.findLocation(location);
                		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
                		   if (start == -1) //if location not found, make start index 0
@@ -130,16 +133,19 @@ public class Main extends Application {
     	   ImageButton PickDestinationsButton = new ImageButton("Pick Destination", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
                 	   String location = JOptionPane.showInputDialog("Enter your destination: ");
+                	   if (location == null) {
+                		   location = "";
+                	   }
                 	   destination = MapManager.findLocation(location);
                		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
-               		   if (destination == -1) //if location not found, make start index 11
-               			   destination = 11;
+               		   if (destination == -1)//if location not found, make start index 11
+               			   destination = 11;               		   
                   }               	   
            );
     	   
     	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   	  System.out.println(start);
+                	   	  System.out.println(start + " " + destination);
                           printRandomMapRoute(start, destination);
                   }
            );
@@ -204,6 +210,9 @@ public class Main extends Application {
     	   ImageButton PickStartButton = new ImageButton("Pick Start", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
                 	   String location = JOptionPane.showInputDialog("Enter your start location: ");
+                	   if (location == null) {
+                		   location = "";
+                	   }
                 	   start = MapManager.findLocation(location);
                		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
                		   if (start == -1) //if location not found, make start index 0
@@ -214,6 +223,9 @@ public class Main extends Application {
     	   ImageButton PickDestinationsButton = new ImageButton("Pick Destination", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
                 	   String location = JOptionPane.showInputDialog("Enter your destination: ");
+                	   if (location == null) {
+                		   location = "";
+                	   }
                 	   destination = MapManager.findLocation(location);
                		   JOptionPane.showMessageDialog(null, "User picked: "+ location);
                		   if (destination == -1) //if location not found, make start index 5
