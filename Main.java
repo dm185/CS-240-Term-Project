@@ -100,21 +100,8 @@ public class Main extends Application {
            Drawer.DrawButton(GoBack, 0, 0);
        }
        
-       //function to print all the locations in a map in a JOptionPane dialog box
-       private static void printMapLocations() {
-    	   int size = MapManager.getNumberOfLocations();
-    	   String output = "";
-    	   for (int i = 0; i < size; i++) {
-    		   RoadNode location = MapManager.getNode(i);
-    		   String name = location.getName();
-    		   String locationNumber = String.valueOf(i+1);
-    		   output += locationNumber + " " + name + "\n";
-    	   }
-    	   JOptionPane.showMessageDialog(null, output);
-       }
        
-       
-     //function to run the random map menu
+       //function to run the random map menu
        private static void runRandomMapMenu() throws FileNotFoundException {
     	   //generate a random map that can be interacted with
 
@@ -126,7 +113,7 @@ public class Main extends Application {
     	   
     	   ImageButton PrintLocationsButton = new ImageButton("Print Locations List", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   printMapLocations();               
+                	   MapManager.printMapLocations();               
                   }
            );
     	   
@@ -175,13 +162,17 @@ public class Main extends Application {
        }
 
        
-       private static void runPremadeMap(){
+       //true = show route, false = show locations only
+       private static void runPremadeMap(boolean showPath){
               Drawer.ClearScreen();
-              //Use path seperator so that it is cross platform
               final String WHATCOM_MAP_IMAGE = "./whatcomcc.jpg";
               Image myImage = ResourceLoader.LoadImage(WHATCOM_MAP_IMAGE);
               Drawer.DrawImage(myImage, 0,0,0.83);
-              
+              MapManager.SwapMap(MapManager.MapType.PREMADE);
+              if(showPath){
+                     MapManager.GetShortestPath(start, destination);
+              }
+
               //Draw the nodes
               MapManager.DrawAllNodes();
               ImageButton GoBack = new ImageButton("Return to Menu", EXIT_ICON_PATH, SCALE,
@@ -200,15 +191,13 @@ public class Main extends Application {
 
     	   ImageButton ShowMapButton = new ImageButton("Show map", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   	  //flipNodes = false;
-                          runPremadeMap();               
+                          runPremadeMap(false);               
                   }
            );
     	   
     	   ImageButton PrintLocationsButton = new ImageButton("Print Locations List", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-                	   printMapLocations();
-                	   //JOptionPane.showMessageDialog(null, "print locations here");               
+                	   MapManager.printMapLocations();          
                   }
            );
     	   
@@ -233,8 +222,7 @@ public class Main extends Application {
            );
     	   ImageButton ShowRouteButton = new ImageButton("Show route", RANDOM_MAP_ICON_PATH, SCALE,
                    mouseClicked ->  {
-//                	   flipNodes = true;
-                	   runPremadeMap();                
+                	   runPremadeMap(true);  //true means to show paths as well              
                   }
            );
     	   

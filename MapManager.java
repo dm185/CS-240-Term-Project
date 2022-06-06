@@ -12,12 +12,9 @@ public class MapManager{
     }
   
     public static void DrawAllNodes(){
-        if(MapManager.currentMap != PremadeMap.getNodeList() || MapManager.currentPath == null){ //Pre-made map does not print out paths if the quickest path is shown
-            for(RoadNode n : MapManager.currentMap){
-                Drawer.DrawNode(n, Drawer.DEFAULT_NODE_COLOR);
-            }
+        for(RoadNode n : MapManager.currentMap){
+            Drawer.DrawNode(n, Drawer.DEFAULT_NODE_COLOR);
         }
-
         if(currentPath != null){
             for(RoadNode n : MapManager.currentPath){
                 Drawer.DrawChosenNode(n, MapManager.currentPath, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
@@ -52,6 +49,14 @@ public class MapManager{
         return MapManager.currentPath;
     }
 
+    //Wrapper for MapManager.GetShortestPath
+    public static Path GetShortestPath(int start, int end){
+        RoadNode source = MapManager.getNode(start);
+        RoadNode target = MapManager.getNode(end);
+        GetShortestPath(source, target);
+        return MapManager.currentPath;
+    }
+
     //Gets a node at a certain index
     public static RoadNode getNode(int index){
         return MapManager.currentMap.get(index);
@@ -60,6 +65,25 @@ public class MapManager{
     public static int getNumberOfLocations() {
     	return currentMap.size();
     }
+
+    //function to print all the locations in a map in a JOptionPane dialog box
+    public static void printMapLocations() {
+       int size = MapManager.getNumberOfLocations();
+       String output = "";
+       int listIndex = 1;
+       for (int i = 0; i < size; i++) {
+            RoadNode location = MapManager.getNode(i);
+    	    String name = location.getName();
+            if(name == null){ //Dont print the location if this is a intercetion
+                continue;
+            }
+    	    String locationNumber = String.valueOf(listIndex);
+              listIndex++;
+    	    output += locationNumber + " " + name + "\n";
+       }
+       JOptionPane.showMessageDialog(null, output);
+    }
+    
     
     public static int findLocation(String location) {
  	   String compare;

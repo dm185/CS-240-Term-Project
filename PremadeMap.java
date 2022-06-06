@@ -20,41 +20,41 @@ public class PremadeMap{
         RoadNode winco = this.AddRoadNode("Winco", 370, 440); //winco
     
         //All the nodes on the roads
-        RoadNode t1 = this.AddRoadNode("t1", 140, 418);               RoadNode m1 = this.AddRoadNode("m1", 309, 518);
-        RoadNode t2 = this.AddRoadNode("t2", 210, 418);               RoadNode m2 = this.AddRoadNode("m2", 310, 440);
-        RoadNode t3 = this.AddRoadNode("t3", 209, 360);			     RoadNode m3 = this.AddRoadNode("m3", 311, 360);
-        RoadNode t4 = this.AddRoadNode("t4", 208, 298);		 	     RoadNode m4 = this.AddRoadNode("m4", 311, 308);
-        RoadNode t5 = this.AddRoadNode("t5", 202, 292);               RoadNode m5 = this.AddRoadNode("m5", 311, 200);
-        RoadNode t6 = this.AddRoadNode("t6", 214, 292);        	     RoadNode m6 = this.AddRoadNode("m6", 312, 40);
-        RoadNode t101 = this.AddRoadNode("t101", 118, 430);           RoadNode j1 = this.AddRoadNode("j1", 500, 204);
-        RoadNode t102 = this.AddRoadNode("t102", 118, 420);           RoadNode j2 = this.AddRoadNode("j2", 443, 203);
-        RoadNode t103 = this.AddRoadNode("t103", 100, 416);           RoadNode j3 = this.AddRoadNode("j3", 443, 308);
-        RoadNode t104 = this.AddRoadNode("t104", 100, 360);           RoadNode j4 = this.AddRoadNode("j4", 458, 340);
-        RoadNode t105 = this.AddRoadNode("t105", 95, 314);            RoadNode j5 = this.AddRoadNode("j5", 458, 362);
-        RoadNode t106 = this.AddRoadNode("t106", 100, 298);           RoadNode j6 = this.AddRoadNode("j6", 458, 398);
-        RoadNode wcc1 = this.AddRoadNode("wwc1", 195, 200);           RoadNode j7 = this.AddRoadNode("j7", 458, 416);
-        RoadNode wcc2 = this.AddRoadNode("wcc2", 200, 210);           RoadNode wnc1 = this.AddRoadNode("wnc1", 335, 440);
-        RoadNode wcc3 = this.AddRoadNode("wcc3", 208, 240);           RoadNode wnc2 = this.AddRoadNode("wnc2", 370, 416);
-        RoadNode wcc4 = this.AddRoadNode("wcc4", 208, 287);           RoadNode wnc3 = this.AddRoadNode("wnc3", 338, 420);
-        RoadNode wcc5 = this.AddRoadNode("wcc5", 210, 200);           RoadNode wnc4 = this.AddRoadNode("wnc4", 345, 416);
-        RoadNode wcc6 = this.AddRoadNode("wcc6", 202, 195);           RoadNode b1 = this.AddRoadNode("b1", 521, 493);
-        RoadNode d1 = this.AddRoadNode("d1", 350, 308);           	 RoadNode b2 = this.AddRoadNode("b2", 475, 492);
-        RoadNode d2 = this.AddRoadNode("d2", 365, 308);           	 RoadNode b3 = this.AddRoadNode("b3", 458, 500);
-        RoadNode d3 = this.AddRoadNode("d3", 365, 337);           	 RoadNode b4 = this.AddRoadNode("b4", 432, 513);
-        RoadNode d4 = this.AddRoadNode("d4", 377, 347);           	 RoadNode b5 = this.AddRoadNode("b5", 400, 520);
-        RoadNode d5 = this.AddRoadNode("d5", 379, 360);           	 RoadNode apt1 = this.AddRoadNode("apt1", 512, 399);
-        RoadNode d6 = this.AddRoadNode("d6", 400, 361);           	 RoadNode apt2 = this.AddRoadNode("apt2", 512, 364);
-        RoadNode d7 = this.AddRoadNode("d7", 400, 375);           	 RoadNode tm1 = this.AddRoadNode("tm1", 300, 438);
-        RoadNode d8 = this.AddRoadNode("d8", 417, 379);           	 RoadNode tm2 = this.AddRoadNode("tm2", 288, 418);
-        RoadNode d9 = this.AddRoadNode("d9", 416, 416);           	 RoadNode wm1 = this.AddRoadNode("wm", 370, 40);  
-        RoadNode mcd1 = this.AddRoadNode("mcd1", 300, 518);	     	 RoadNode wcc101 = this.AddRoadNode("wcc101", 115, 219);
-        RoadNode mcd2 = this.AddRoadNode("mcd2", 280, 518);	     	 RoadNode wcc102 = this.AddRoadNode("wcc102", 100, 219);
-        RoadNode mcd3 = this.AddRoadNode("mcd3", 250, 540);
-        RoadNode mcd4 = this.AddRoadNode("mcd4", 195, 535);
-        RoadNode mcd5 = this.AddRoadNode("mcd5", 158, 537);
-        RoadNode mcd6 = this.AddRoadNode("mcd6", 157, 503);
-        RoadNode mcd7 = this.AddRoadNode("mcd7", 140, 467);
-        RoadNode mcd8 = this.AddRoadNode("mcd8", 118, 445);        
+        RoadNode t1 = this.AddRoadNode(null, 140, 418);               RoadNode m1 = this.AddRoadNode(null, 309, 518);
+        RoadNode t2 = this.AddRoadNode(null, 210, 418);               RoadNode m2 = this.AddRoadNode(null, 310, 440);
+        RoadNode t3 = this.AddRoadNode(null, 209, 360);			      RoadNode m3 = this.AddRoadNode(null, 311, 360);
+        RoadNode t4 = this.AddRoadNode(null, 208, 298);		 	      RoadNode m4 = this.AddRoadNode(null, 311, 308);
+        RoadNode t5 = this.AddRoadNode(null, 202, 292);               RoadNode m5 = this.AddRoadNode(null, 311, 200);
+        RoadNode t6 = this.AddRoadNode(null, 214, 292);        	      RoadNode m6 = this.AddRoadNode(null, 312, 40);
+        RoadNode t101 = this.AddRoadNode(null, 118, 430);             RoadNode j1 = this.AddRoadNode(null, 500, 204);
+        RoadNode t102 = this.AddRoadNode(null, 118, 420);             RoadNode j2 = this.AddRoadNode(null, 443, 203);
+        RoadNode t103 = this.AddRoadNode(null, 100, 416);             RoadNode j3 = this.AddRoadNode(null, 443, 308);
+        RoadNode t104 = this.AddRoadNode(null, 100, 360);             RoadNode j4 = this.AddRoadNode(null, 458, 340);
+        RoadNode t105 = this.AddRoadNode(null, 95, 314);              RoadNode j5 = this.AddRoadNode(null, 458, 362);
+        RoadNode t106 = this.AddRoadNode(null, 100, 298);             RoadNode j6 = this.AddRoadNode(null, 458, 398);
+        RoadNode wcc1 = this.AddRoadNode(null, 195, 200);             RoadNode j7 = this.AddRoadNode(null, 458, 416);
+        RoadNode wcc2 = this.AddRoadNode(null, 200, 210);             RoadNode wnc1 = this.AddRoadNode(null, 335, 440);
+        RoadNode wcc3 = this.AddRoadNode(null, 208, 240);             RoadNode wnc2 = this.AddRoadNode(null, 370, 416);
+        RoadNode wcc4 = this.AddRoadNode(null, 208, 287);             RoadNode wnc3 = this.AddRoadNode(null, 338, 420);
+        RoadNode wcc5 = this.AddRoadNode(null, 210, 200);             RoadNode wnc4 = this.AddRoadNode(null, 345, 416);
+        RoadNode wcc6 = this.AddRoadNode(null, 202, 195);             RoadNode b1 = this.AddRoadNode(null, 521, 493);
+        RoadNode d1 = this.AddRoadNode(null, 350, 308);           	  RoadNode b2 = this.AddRoadNode(null, 475, 492);
+        RoadNode d2 = this.AddRoadNode(null, 365, 308);           	  RoadNode b3 = this.AddRoadNode(null, 458, 500);
+        RoadNode d3 = this.AddRoadNode(null, 365, 337);           	  RoadNode b4 = this.AddRoadNode(null, 432, 513);
+        RoadNode d4 = this.AddRoadNode(null, 377, 347);           	  RoadNode b5 = this.AddRoadNode(null, 400, 520);
+        RoadNode d5 = this.AddRoadNode(null, 379, 360);           	  RoadNode apt1 = this.AddRoadNode(null, 512, 399);
+        RoadNode d6 = this.AddRoadNode(null, 400, 361);           	  RoadNode apt2 = this.AddRoadNode(null, 512, 364);
+        RoadNode d7 = this.AddRoadNode(null, 400, 375);           	  RoadNode tm1 = this.AddRoadNode(null, 300, 438);
+        RoadNode d8 = this.AddRoadNode(null, 417, 379);           	  RoadNode tm2 = this.AddRoadNode(null, 288, 418);
+        RoadNode d9 = this.AddRoadNode(null, 416, 416);           	  RoadNode wm1 = this.AddRoadNode(null, 370, 40);  
+        RoadNode mcd1 = this.AddRoadNode(null, 300, 518);	     	  RoadNode wcc101 = this.AddRoadNode(null, 115, 219);
+        RoadNode mcd2 = this.AddRoadNode(null, 280, 518);	     	  RoadNode wcc102 = this.AddRoadNode(null, 100, 219);
+        RoadNode mcd3 = this.AddRoadNode(null, 250, 540);
+        RoadNode mcd4 = this.AddRoadNode(null, 195, 535);
+        RoadNode mcd5 = this.AddRoadNode(null, 158, 537);
+        RoadNode mcd6 = this.AddRoadNode(null, 157, 503);
+        RoadNode mcd7 = this.AddRoadNode(null, 140, 467);
+        RoadNode mcd8 = this.AddRoadNode(null, 118, 445);        
             
         //All of the road connections. Replace Point of interest nodes with startnode and end for the shortest-path between the two.
         startnode.AddConnection(wcc1, SPEED_LIMIT_1); //startnode (whatcomcc)      <----- CURRENT STARTNODE

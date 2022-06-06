@@ -30,6 +30,9 @@ public class Drawer{
        
        //Draw Text
        static public void DrawString(String text, Number x, Number y){
+              if(text == null)
+                     return;
+
               Text t = new Text();
               t.setText(text);
               t.setX(x.doubleValue());
@@ -102,11 +105,20 @@ public class Drawer{
        static public <T extends Number> void DrawLine(T x1, T y1, T x2, T y2){
               Drawer.get().DrawLine(x1, y1, x2, y2, Color.BLACK);
        }
-       
-       static public void DrawChosenNode(RoadNode n, Path path, Color c){
-              DrawCircle((int)n.getX(), (int)n.getY(), 0, c, false);
-              //DrawString((int)n.getX(), (int)n.getY() + 0, n.getName());
-              
+
+       static public void DrawNodeConnection(RoadNode n, Color c){
+              for(Connection link : n.getLinks()) {
+                     RoadNode n1 = link.getSource();
+                     RoadNode n2 = link.getDest();
+                     DrawLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
+              }
+       }
+
+       static public void DrawNodeConnection(RoadNode n){
+              DrawNodeConnection(n, Drawer.DEFAULT_NODE_COLOR);
+       }
+
+       static public void DrawChosenNodeConnection(RoadNode n, Path path, Color c){
               for(Connection link : n.getLinks()) {
                      RoadNode n1 = link.getSource();
                      RoadNode n2 = link.getDest();
@@ -116,20 +128,27 @@ public class Drawer{
                      }
               }
        }
+
+       static public void DrawChosenNodeConnection(RoadNode n, Path path){
+              DrawNodeConnection(n, Drawer.DEFAULT_CHOSEN_NODE_COLOR);
+       }
+       
+       static public void DrawChosenNode(RoadNode n, Path path, Color c){
+              if(n.getName() != null) { //Only show point if it has a name
+                     DrawCircle((int)n.getX(), (int)n.getY(), 3, c, false);
+                     DrawString(n.getName(), (int)n.getX(), (int)n.getY() + 10);
+              }
+              
+              DrawChosenNodeConnection(n, path, c);
+       }
        
        static public void DrawNode(RoadNode n, Color c){
-              DrawCircle((int)n.getX(), (int)n.getY(), 3, c, false);
-              DrawString(n.getName(), (int)n.getX(), (int)n.getY() + 10);
-              
-              for(Connection link : n.getLinks()) {
-                     RoadNode n1 = link.getSource();
-                     RoadNode n2 = link.getDest();
-                     DrawLine((int)n1.getX(), (int)n1.getY(), (int)n2.getX(), (int)n2.getY(), c);
+              if(n.getName() != null) {
+                     DrawCircle((int)n.getX(), (int)n.getY(), 3, c, false);
+                     DrawString(n.getName(), (int)n.getX(), (int)n.getY() + 10);
               }
-       }
-
-       static public void TestDraw(String text, Number x, Number y){
-              Drawer.get().DrawString(text, x, y);
+              
+              DrawNodeConnection(n, c);
        }
        
        static public void DrawChosenNode(RoadNode n, Path path){
