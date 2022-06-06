@@ -25,7 +25,7 @@ public class MapManager{
 
 
     public static void SwapMap(MapType type){
-        currentPath = null;
+        MapManager.currentPath = null;
         switch(type){
             case RANDOM:
                 try{

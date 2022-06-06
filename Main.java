@@ -54,10 +54,8 @@ public class Main extends Application {
     static final double START_Y = (double)(CENTERY / 2.0);       
        
        //function to draw routes over a random map
-       private static void drawRandomMapRoutes(int s, int e) {
-    	  MapManager.SwapMap(MapManager.MapType.RANDOM);
-    	  RoadNode start = MapManager.getNode(s);
-          RoadNode end = MapManager.getNode(e);
+       private static void drawRandomMapRoutes(int start, int end) {
+    	   MapManager.SwapMap(MapManager.MapType.RANDOM);
           MapManager.GetShortestPath(start, end);
           MapManager.DrawAllNodes();
        }
