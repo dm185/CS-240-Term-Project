@@ -45,6 +45,9 @@ public class MapManager{
 
     //Wrapper for RoadNode.getShortestPath
     public static Path GetShortestPath(RoadNode start, RoadNode end){
+        for(RoadNode n : MapManager.currentMap){
+            n.resetPathData();
+        }
         MapManager.currentPath = start.getShortestPath(end);
         return MapManager.currentPath;
     }

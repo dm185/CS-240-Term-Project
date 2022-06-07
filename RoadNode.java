@@ -36,6 +36,14 @@ public class RoadNode{
        public String getName(){
               return this.name;
        }
+
+       //Call this to reset the data used for pathfinding
+       public void resetPathData(){
+              visited = false;
+              qeued = false;
+              distance = 0;
+              prev = null;
+       }
        
        /***
          * Internally marks the Node as visited so that it is not processed again
